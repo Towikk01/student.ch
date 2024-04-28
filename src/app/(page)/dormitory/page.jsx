@@ -52,7 +52,7 @@ const dormitoryThreads = [
 
 const DormitoryPage = () => {
   return (
-    <section className="grid grid-cols-2 gap-y-1.5 gap-x-1.5">
+    <section className="grid md:grid-cols-2 gap-y-1.5 gap-x-1.5">
       {dormitoryThreads.map((element, index) =>
         <ThreadGlobal text={element.text} title={element.title} date={element.date} id={element.id}
                       role={element.role} />

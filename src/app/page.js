@@ -29,18 +29,13 @@ const fakeData = [{
 export default function Home() {
   const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, logIn, logOut } = useAuth()
   return (
-    <CustomSection direction={'row'}>
-      <div className="w-full flex flex-col justify-around max-h-[240px]">
+    <CustomSection direction={'col'}>
+      <div className="w-full flex flex-col justify-around max-h-[240px] text-center gap-2">
         <h1 className="text-2xl text-center font-bold text-primary whitespace-pre">Вітаємо на студент.ч!</h1>
         <h4 className="text-xl text-primary ">Дослідіть студентське життя від гуртожитку до дипломної роботи!</h4>
         <p className="text-base text-[#fff] opacity-80 leading-8">Іміджборд для всіх: від студентів до викладачів,
           кожен може
           висказати та запитати будь-що і будь коли!</p>
-        <div className="flex flex-row gap-2 items-center">
-          {isLoggedIn ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
-          {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
-            <Button><Link href="/login">Увійти</Link></Button>}
-        </div>
       </div>
       <div className="w-full h-full flex flex-col gap-3 items-center justify-end">
         <h4 className="text-primary text-2xl">Останні треди</h4>

@@ -11,7 +11,7 @@ const ThreadReply = ({
                      }) => {
   return (
     <article
-      className="w-fit max-w-[500px] h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
+      className="w-fit max-w-[500px] border-peach border h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
       {/*Text block */}
       <div className="w-fit flex flex-col">
         <div className="post-actions flex flex-row justify-between gap-1.5 items-center">

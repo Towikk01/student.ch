@@ -35,8 +35,8 @@ const LoginPage = () => {
 
   return (
     <CustomSection direction="col" center="items-center justify-center">
-      <div className="flex flex-col items-center bg-black-pearl rounded-xl py-2 px-4">
-        <h4 className="text-4xl text-primary">Увійти в особистий кабінет</h4>
+      <div className="flex flex-col items-center bg-black-pearl gap-4 rounded-xl py-2 px-4">
+        <h4 className="text-[20px] sm:text-4xl text-center text-primary">Увійти в особистий кабінет</h4>
         <form className="grid grid-cols-2 gap-x-2 gap-y-1.5 place-items-stretch w-full" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
             <label htmlFor="login" className="text-primary">Логін</label>

@@ -13,7 +13,7 @@ const ThreadGlobal = ({
                       }) => {
   return (
     <article
-      className="w-fit max-w-max h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
+      className="w-fit max-w-max border-orange border-[1px] h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
       {/*Image block */}
       {imageUrl &&
         <div className="w-max h-max">

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import tailwind_hamburgers from 'tailwind-hamburgers'
+
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -15,12 +17,12 @@ module.exports = {
     },
     colors: {
       'black-pearl': '#1D2636',
-      'primary': '#E0E1DD',
-      'gray': '#7B8CA6',
-      'soft-gray': '#465975',
-      'green-dark': '#475C45',
+      'primary': '#EEE7DF',
+      'brown': '#2C121B',
+      'peach': '#FBD387',
+      'orange': '#F26F14',
       'green-soft': '#789678'
     }
   },
-  plugins: []
+  plugins: [tailwind_hamburgers]
 }

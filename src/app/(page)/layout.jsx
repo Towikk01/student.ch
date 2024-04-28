@@ -10,7 +10,7 @@ const ThreadsLayout = ({ children }) => {
 
   return (
     <CustomSection direction="col" center="items-center">
-      <h3 className="text-primary text-3xl">Дошка {titlePath}</h3>
+      <h3 className="text-primary text-[18px] md:text-4xl">Дошка {titlePath}</h3>
       {children}
     </CustomSection>
   )
