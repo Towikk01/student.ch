@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import CustomSection from '@/components/custom-section/CustomSection'
 import Button from '@/components/button/Button'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/app/UserProvider'
 
 
 const LoginPage = () => {
@@ -10,6 +11,7 @@ const LoginPage = () => {
     login: '',
     password: ''
   })
+  const { logIn } = useAuth()
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -45,7 +47,7 @@ const LoginPage = () => {
             <input type="password" id="password" className="input rounded-sm" onChange={handleChange} />
           </div>
           <div className="col-span-2">
-            <Button type="submit" width="w-full">Увійти</Button>
+            <Button onClick={e => logIn(e)} type="submit" width="w-full">Увійти</Button>
           </div>
         </form>
       </div>

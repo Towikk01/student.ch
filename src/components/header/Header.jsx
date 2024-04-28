@@ -34,7 +34,7 @@ const Header = () => {
         </nav>
         <div className="flex flex-row gap-3 items-center">
           {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
-            <Button onClick={(e) => logIn(e)}><Link href="/login">Увійти</Link></Button>}
+            <Button><Link href="/login">Увійти</Link></Button>}
           {isLoggedIn ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
         </div>
       </div>

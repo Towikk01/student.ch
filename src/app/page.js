@@ -39,7 +39,7 @@ export default function Home() {
         <div className="flex flex-row gap-2 items-center">
           {isLoggedIn ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
           {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
-            <Button onClick={(e) => logIn(e)}><Link href="/login">Увійти</Link></Button>}
+            <Button><Link href="/login">Увійти</Link></Button>}
         </div>
       </div>
       <div className="w-full h-full flex flex-col gap-3 items-center justify-end">
