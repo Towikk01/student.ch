@@ -4,7 +4,7 @@ import './globals.css'
 import Header from '@/components/header/Header'
 import { createContext } from 'react'
 import React from 'react'
-import { UserProvider } from '@/app/UserProvider'
+import AuthProvider from '@/app/UserProvider'
 
 const inter = Roboto({ subsets: ['latin'], weight: '400', style: 'normal' })
 
@@ -16,7 +16,7 @@ const inter = Roboto({ subsets: ['latin'], weight: '400', style: 'normal' })
 
 export default function RootLayout({ children }) {
   return (
-    <UserProvider>
+    <AuthProvider>
       <html lang="en">
       <body className={`${inter.className} flex flex-col items-center `}>
       <Header />
@@ -25,6 +25,6 @@ export default function RootLayout({ children }) {
       </main>
       </body>
       </html>
-    </UserProvider>
+    </AuthProvider>
   )
 }

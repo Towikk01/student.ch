@@ -5,12 +5,12 @@ import { LogoWB } from '../../../public'
 import Link from 'next/link'
 import CustomLink from '@/components/header/CustomLink'
 import Button from '@/components/button/Button'
-import { UserContext } from '@/app/UserProvider'
+import { useAuth } from '@/app/UserProvider'
 
 
 const Header = () => {
-  const isLogged = useContext(UserContext)
-  const isUserLoggedIn = useContext(UserContext)
+  const { isLoggedIn, logIn, logOut } = useAuth()
+
   const dataLinks = [
     { title: 'Домашня', href: '/' },
     { title: 'Навчання', href: '/education' },
@@ -33,8 +33,9 @@ const Header = () => {
           </ul>
         </nav>
         <div className="flex flex-row gap-3 items-center">
-          <Button><Link href="/login">{isLogged ? 'Увійти' : 'Вийти'}</Link></Button>
-          {isLogged && <Button><Link href="/registration">Зареєструватися</Link></Button>}
+          {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
+            <Button onClick={(e) => logIn(e)}><Link href="/login">Увійти</Link></Button>}
+          {isLoggedIn ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
         </div>
       </div>
     </header>

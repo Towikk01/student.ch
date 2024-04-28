@@ -7,7 +7,7 @@ import Button from '@/components/button/Button'
 
 import ThreadGlobal from '@/components/threads/ThreadGlobal'
 import Link from 'next/link'
-import { UserContext } from '@/app/UserProvider'
+import { useAuth } from '@/app/UserProvider'
 
 const fakeData = [{
   text: 'Epic night in the dorm! Someone’s Siri kept saying "I\'m watching you" at 3 AM. Turns out it was just Dave\'s new sleep-talking talent. We nearly called an exorcist. #DormLife #ParanormalDave',
@@ -26,10 +26,8 @@ const fakeData = [{
   }
 
 ]
-
-
 export default function Home() {
-  const { isUserLoggedIn } = useContext(UserContext)
+  const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, logIn, logOut } = useAuth()
   return (
     <CustomSection direction={'row'}>
       <div className="w-full flex flex-col justify-around max-h-[240px]">
@@ -39,8 +37,9 @@ export default function Home() {
           кожен може
           висказати та запитати будь-що і будь коли!</p>
         <div className="flex flex-row gap-2 items-center">
-          <Button><Link href="/registration">Зареєструватися</Link></Button>
-          <Button><Link href="/login">{isUserLoggedIn ? 'Увійти' : 'Вийти'}</Link></Button>
+          {isLoggedIn ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
+          {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
+            <Button onClick={(e) => logIn(e)}><Link href="/login">Увійти</Link></Button>}
         </div>
       </div>
       <div className="w-full h-full flex flex-col gap-3 items-center justify-end">

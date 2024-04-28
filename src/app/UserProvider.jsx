@@ -1,14 +1,58 @@
 'use client'
-import React, { createContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
-export const UserContext = createContext()
+export const AuthContext = createContext()
 
-export const UserProvider = ({ children }) => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true) // Set initial state as needed
+export function useAuth() {
+  return useContext(AuthContext)
+}
+
+
+const AuthProvider = ({ children }) => {
+
+  const logIn = (e) => {
+    e.preventDefault()
+    setIsLoggedIn(true)
+    setAuthUser({
+      name: 'John Doe',
+      nickname: 'JD'
+    })
+  }
+  const logOut = (e) => {
+    e.preventDefault()
+    setIsLoggedIn(false)
+    setAuthUser(null)
+  }
+
+  const [authUser, setAuthUser] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(null)
+
+  const value = {
+    authUser,
+    setAuthUser,
+    isLoggedIn,
+    setIsLoggedIn,
+    logIn,
+    logOut
+  }
+
+  // useEffect(() => {
+  //   const subscribe = AuthService.subscribe((user) => {
+  //     if (user) {
+  //       setIsLoggedIn(true)
+  //       setAuthUser(user)
+  //     } else {
+  //       setIsLoggedIn(false)
+  //       setAuthUser(null)
+  //     }
+  //   })
+  // })
 
   return (
-    <UserContext.Provider value={{ isUserLoggedIn, setIsUserLoggedIn }}>
+    <AuthContext.Provider value={value}>
       {children}
-    </UserContext.Provider>
+    </AuthContext.Provider>
   )
 }
+
+export default AuthProvider
