@@ -43,7 +43,8 @@ const Header = () => {
         <div className="hidden sm:flex flex-row gap-1 md:gap-2 lg:gap-3 items-center">
           {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
             <Button><Link href="/login">Увійти</Link></Button>}
-          {isLoggedIn ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
+          {isLoggedIn ? <Button><Link href="/personal-account">Особистий кабінет</Link></Button> :
+            <Button><Link href="/registration">Зареєструватися</Link></Button>}
         </div>
       </div>
     </header>

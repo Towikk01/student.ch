@@ -23,7 +23,7 @@ const ThreadGlobal = ({
       }
       {/*Text block */}
       <div className="w-fit flex flex-col gap-2">
-        <div className="post-actions flex flex-col md:flex-row justify-between gap-1.5 items-center">
+        <div className="post-actions flex flex-col sm:flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">
             <button
               className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
@@ -53,7 +53,6 @@ const ThreadGlobal = ({
           </p>
         </div>
       </div>
-
     </article>
   )
 }

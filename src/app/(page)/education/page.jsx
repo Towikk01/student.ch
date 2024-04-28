@@ -2,15 +2,7 @@ import React from 'react'
 import ThreadGlobal from '@/components/threads/ThreadGlobal'
 
 const educationThreads = [
-  {
-    imageUrl: '/images/lecture.jpg',
-    role: 'Профессор',
-    date: '24.04.2024',
-    id: '№1',
-    title: 'Лекция о лекциях',
-    replyUrl: '/education/lecture-on-lectures',
-    text: 'Объявление: следующая лекция будет о том, как не заснуть на лекции. Приносите кофе!'
-  },
+
   {
     imageUrl: '/images/exam.jpg',
     role: 'Отличник',
@@ -46,6 +38,15 @@ const educationThreads = [
     title: 'Кепка в полете!',
     replyUrl: '/education/graduation-cap',
     text: 'Совет выпускникам: кидая кепку вверх, цельтесь в декана! Легенда гласит, это приносит удачу.'
+  },
+  {
+    imageUrl: '/images/lecture.jpg',
+    role: 'Профессор',
+    date: '24.04.2024',
+    id: '№1',
+    title: 'Лекция о лекциях',
+    replyUrl: '/education/lecture-on-lectures',
+    text: 'Объявление: следующая лекция будет о том, как не заснуть на лекции. Приносите кофе!'
   }
 ]
 
