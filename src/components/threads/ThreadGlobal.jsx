@@ -13,7 +13,7 @@ const ThreadGlobal = ({
                       }) => {
   return (
     <article
-      className="w-fit max-w-max border-orange border-[1px] h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
+      className="w-full md:w-fit items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
       {/*Image block */}
       {imageUrl &&
         <div className="w-max h-max">
@@ -22,8 +22,8 @@ const ThreadGlobal = ({
         </div>
       }
       {/*Text block */}
-      <div className="w-fit flex flex-col">
-        <div className="post-actions flex flex-row justify-between gap-1.5 items-center">
+      <div className="w-fit flex flex-col gap-2">
+        <div className="post-actions flex flex-col md:flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">
             <button
               className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
@@ -44,9 +44,9 @@ const ThreadGlobal = ({
             <span className="text-[10px] text-primary">{id}</span>
           </div>
         </div>
-        <div>
+        <div className="flex flex-col items-center md:items-start gap-1.5">
           {title &&
-            <h4 className="text-[18px] font-bold text-primary">{title}</h4>
+            <h4 className="text-[18px] text-center md:text-start font-bold text-primary">{title}</h4>
           }
           <p className="text-[14px] text-ellipsis text-primary">
             {text}
