@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
+import AddToFav from '@/components/button/AddToFav'
 
 const ThreadGlobal = ({
                         imageUrl,
@@ -37,8 +38,11 @@ const ThreadGlobal = ({
 
   return (
     <article
-      className="w-full md:w-fit items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
+      className="w-full md:w-fit relative items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
       {/*Image block */}
+      {loggedIn &&
+        <AddToFav threadId={id} />
+      }
       {imageUrl &&
         <div className="w-max h-max">
           <Image src={imageUrl} alt="Post Image"
