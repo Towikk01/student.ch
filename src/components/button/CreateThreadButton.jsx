@@ -51,14 +51,15 @@ const CreateThreadButton = ({ category }) => {
   }
 
   return (
-    <div className="relative flex flex-col items-center">
-      <button className="bg-black-pearl hover:bg-black-pearl/50 text-primary font-bold py-2 px-4 rounded"
-              onClick={handleOpen}>
+    <div className="relative flex flex-col w-full items-center">
+      <button
+        className="bg-black-pearl hover:bg-black-pearl/50 text-primary  border-peach border font-bold py-2 px-4 rounded"
+        onClick={handleOpen}>
         Створити тред
       </button>
       {isOpen && (
         <div
-          className="absolute top-full bg-black-pearl mt-1 w-96 p-4 border border-orange z-50 rounded shadow-lg bg-white">
+          className="absolute top-full bg-black-pearl mt-1 w-full max-w-[400px] p-4 border border-orange z-50 rounded shadow-lg bg-white">
           <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <div className="mb-4 w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2">

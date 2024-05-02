@@ -1,8 +1,12 @@
+'use client'
 import React from 'react'
 import CustomSection from '@/components/custom-section/CustomSection'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
+import { user } from '@/lib/slices/userSlice/userSlice'
 
 const PersonalAccountPage = () => {
+  const userData = useSelector(user)
   return (
     <CustomSection direction="col" center="items-center justify-center">
       <h4 className="text-primary md:text-4xl text-base">Ваші данні</h4>
@@ -15,7 +19,7 @@ const PersonalAccountPage = () => {
           </div>
           <div className="flex flex-col  gap-1.5 items-center">
             <h6 className="text-peach text-sm">Ваш нікнейм</h6>
-            <span className="text-primary text-base">kekshrek</span>
+            <span className="text-primary text-base">{userData.nickname}</span>
             <button
               className="text-primary text-[12px] hover:text-peach bg-black-pearl rounded-xl border-orange border px-1 py-1 transition-all duration-200  font-bold sm:absolute right-2 top-2">Змінити
               нікнейм
