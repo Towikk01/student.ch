@@ -3,15 +3,16 @@ import React, { useState } from 'react'
 import CustomSection from '@/components/custom-section/CustomSection'
 import Button from '@/components/button/Button'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/app/UserProvider'
+import { logIn } from '@/lib/slices/userSlice/userSlice'
+import { useDispatch } from 'react-redux'
 
 
 const LoginPage = () => {
+  const dispatch = useDispatch()
   const [userData, setUserData] = useState({
     login: '',
     password: ''
   })
-  const { logIn } = useAuth()
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -50,7 +51,7 @@ const LoginPage = () => {
                    onChange={handleChange} />
           </div>
           <div className="col-span-2">
-            <Button onClick={e => logIn(e)} type="submit" width="w-full">Увійти</Button>
+            <Button onClick={e => dispatch(logIn())} type="submit" width="w-full">Увійти</Button>
           </div>
         </form>
       </div>

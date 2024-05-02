@@ -2,8 +2,11 @@
 import React, { useState } from 'react'
 import CustomSection from '@/components/custom-section/CustomSection'
 import Button from '@/components/button/Button'
+import { useDispatch } from 'react-redux'
+
 
 const RegistrationPage = () => {
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     name: '',
     secondName: '',

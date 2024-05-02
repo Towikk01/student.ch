@@ -22,7 +22,6 @@ const PersonalAccountPage = () => {
             </button>
           </div>
         </div>
-
         <div className="flex flex-col gap-1">
           <h6 className="text-peach text-sm text-center">Ваші вподобайки</h6>
           <div className="flex flex-col sm:grid grid-cols-2 w-full md:grid-cols-4 items-center sm:items-stretch gap-1">

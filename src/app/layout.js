@@ -5,6 +5,8 @@ import Header from '@/components/header/Header'
 import { createContext } from 'react'
 import React from 'react'
 import AuthProvider from '@/app/UserProvider'
+import { store } from '@/lib/store'
+import { Provider } from 'react-redux'
 
 const inter = Roboto({ subsets: ['latin'], weight: '400', style: 'normal' })
 
@@ -16,15 +18,17 @@ const inter = Roboto({ subsets: ['latin'], weight: '400', style: 'normal' })
 
 export default function RootLayout({ children }) {
   return (
-    <AuthProvider>
-      <html lang="en">
-      <body className={`${inter.className} flex flex-col items-center `}>
-      <Header />
-      <main className="w-full min-h-[90vh] flex flex-col px-2 sm:px-3.5 md:px-5">
-        {children}
-      </main>
-      </body>
-      </html>
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <html lang="en">
+        <body className={`${inter.className} flex flex-col items-center `}>
+        <Header />
+        <main className="w-full min-h-[90vh] flex flex-col px-2 sm:px-3.5 md:px-5">
+          {children}
+        </main>
+        </body>
+        </html>
+      </AuthProvider>
+    </Provider>
   )
 }

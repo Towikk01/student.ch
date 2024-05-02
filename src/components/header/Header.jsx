@@ -7,6 +7,8 @@ import CustomLink from '@/components/header/CustomLink'
 import Button from '@/components/button/Button'
 import { useAuth } from '@/app/UserProvider'
 import BurgerMenu from '@/components/burger-menu/BurgerMenu'
+import { logOut, logIn, isLoggedIn } from '@/lib/slices/userSlice/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const dataLinks = [
   { title: 'Домашня', href: '/' },
@@ -17,7 +19,8 @@ const dataLinks = [
 
 
 const Header = () => {
-  const { isLoggedIn, logIn, logOut } = useAuth()
+  const dispatch = useDispatch()
+  const LoggedIn = useSelector(isLoggedIn)
   const [opened, setOpened] = useState(false)
 
   const toggleMenu = () => {
@@ -41,9 +44,9 @@ const Header = () => {
           </ul>
         </nav>
         <div className="hidden sm:flex flex-row gap-1 md:gap-2 lg:gap-3 items-center">
-          {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
+          {LoggedIn ? <Button onClick={(e) => dispatch(logOut())}>Вийти</Button> :
             <Button><Link href="/login">Увійти</Link></Button>}
-          {isLoggedIn ? <Button><Link href="/personal-account">Особистий кабінет</Link></Button> :
+          {LoggedIn ? <Button><Link href="/personal-account">Особистий кабінет</Link></Button> :
             <Button><Link href="/registration">Зареєструватися</Link></Button>}
         </div>
       </div>

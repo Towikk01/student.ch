@@ -1,6 +1,9 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
+import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 
 const ThreadGlobal = ({
                         imageUrl,
@@ -11,6 +14,27 @@ const ThreadGlobal = ({
                         replyUrl = '/0',
                         text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.`
                       }) => {
+
+  const loggedIn = useSelector(isLoggedIn)
+  const [showReplyForm, setShowReplyForm] = useState(false)
+  const [reply, setReply] = useState({
+    text: '',
+    image: null
+  })
+  const handleInputChange = e => {
+    const { name, value, files, type } = e.target
+    setReply({
+      ...reply,
+      [name]: type === 'file' ? files[0] : value
+    })
+  }
+
+  const handleReply = e => {
+    e.preventDefault()
+    setReply({ text: '', image: null })
+    setShowReplyForm(false)
+  }
+
   return (
     <article
       className="w-full md:w-fit items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
@@ -25,10 +49,28 @@ const ThreadGlobal = ({
       <div className="w-fit flex flex-col gap-2">
         <div className="post-actions flex flex-col sm:flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">
-            <button
-              className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
-              Відповісти
-            </button>
+            {loggedIn &&
+              <div className="relative flex">
+                <button
+                  onClick={() => setShowReplyForm(!showReplyForm)}
+                  className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+                  Відповісти
+                </button>
+                {showReplyForm && (
+                  <form
+                    className="absolute top-[22px]  bg-black-pearl flex flex-col z-30 p-2 border-orange border rounded shadow-lg"
+                    onSubmit={handleReply}>
+                    <textarea name="text" value={reply.text} onChange={handleInputChange} placeholder="Ваш коментар..."
+                              className="text-[10px] text-black-pearl p-1 rounded border border-peach w-48" />
+                    <input type="file" name="image" onChange={handleInputChange} className="text-[10px] my-1" />
+                    <button type="submit"
+                            className="bg-black-pearl/80 border border-orange hover:bg-blue-700 text-white text-[10px] font-bold py-1 px-2 rounded">
+                      Відповісти
+                    </button>
+                  </form>
+                )}
+              </div>
+            }
             <button
               className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               Сховати

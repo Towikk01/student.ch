@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
 
   // useEffect(() => {
   //   const subscribe = AuthService.subscribe((user) => {
-  //     if (user) {
+  //     if (user) {5
   //       setIsLoggedIn(true)
   //       setAuthUser(user)
   //     } else {
