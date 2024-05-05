@@ -3,10 +3,13 @@ import React, { useState } from 'react'
 import CustomSection from '@/components/custom-section/CustomSection'
 import Button from '@/components/button/Button'
 import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/navigation'
+import { register } from '@/lib/slices/userSlice/userSlice'
 
 
 const RegistrationPage = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     firstName: '',
@@ -50,7 +53,20 @@ const RegistrationPage = () => {
             alert('Ви успішно зареєструвались')
             return response.json()
           }
-        })
+        }
+        )
+        .then(data => {
+          const accessToken = data.access_token
+          console.log(accessToken)
+          localStorage.setItem('accessToken', accessToken)
+          dispatch(register(data))
+          router.push('/')
+        }
+        )
+        .catch(error => {
+          console.error('Error:', error)
+        }
+        )
     }
   }
 

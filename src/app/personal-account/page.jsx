@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomSection from '@/components/custom-section/CustomSection'
 import Link from 'next/link'
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,6 +11,13 @@ const PersonalAccountPage = () => {
   const [nickname, setNickname] = useState(userData.nickname)
   const [editMode, setEditMode] = useState(false)
   const dispatch = useDispatch()
+
+  const [fetchedData, setFetchedData] = useState({
+    username: '',
+    firstName: '',
+    lastName: '',
+  }
+  )
 
   const handleEditToggle = () => {
     setEditMode(!editMode)
@@ -34,6 +41,34 @@ const PersonalAccountPage = () => {
     }
   }
 
+  useEffect(() => {
+    fetch('http://localhost:8080/me/info', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+          if (!response.ok) {
+            console.log('Помилка при завантаженні даних')
+          }
+
+          setFetchedData(
+            {
+              username: response.username,
+              firstName: response.firstName,
+              lastName: response.lastName
+            }
+          )
+
+
+        }
+      )
+  }
+  , [])
+
   return (
     <CustomSection direction="col" center="items-center justify-center">
       <h4 className="text-primary md:text-4xl text-base">Ваші данні</h4>
@@ -42,7 +77,7 @@ const PersonalAccountPage = () => {
         <div className="flex flex-col sm:flex-row justify-evenly w-full gap-1">
           <div className="flex flex-col gap-1.5 items-center">
             <h6 className="text-peach text-sm">Ваше імʼя та прізвище</h6>
-            <span className="text-primary text-base">Кек Шрекович</span>
+            <span className="text-primary text-base">{fetchedData.firstName} {fetchedData.lastName}</span>
           </div>
           <div className="flex flex-col gap-1.5 items-center">
             <h6 className="text-peach text-sm">Ваш нікнейм</h6>
@@ -50,7 +85,7 @@ const PersonalAccountPage = () => {
               <div className="flex flex-col gap-2 items-center">
                 <input
                   type="text"
-                  value={nickname}
+                  value={fetchedData.username}
                   onChange={handleNicknameChange}
                   className="text-black-pearl rounded-[12px] border border-peach outline-0 px-1 py-0.5 text-base"
                   autoFocus
@@ -63,7 +98,7 @@ const PersonalAccountPage = () => {
               </div>
             ) : (
               <div onClick={handleEditToggle} className="flex flex-col gap-2 items-center">
-                <span className="text-primary text-base">{userData.nickname}</span>
+                <span className="text-primary text-base">{fetchedData.username}</span>
                 <button
                   className="text-primary text-[12px] hover:text-peach bg-black-pearl rounded-xl border-orange border px-1 py-1 transition-all duration-200 font-bold sm:absolute right-2 top-2">
                   Редагувати

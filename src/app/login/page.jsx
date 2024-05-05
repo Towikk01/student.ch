@@ -64,10 +64,15 @@ const LoginPage = () => {
         dispatch(logIn({ username: userData.username, password: userData.password }));
         console.log(data); // You may handle response data here
         // Clear form data
+        const accessToken = data.access_token;
+        const refreshToken = data.refresh_token;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
         setUserData({
           username: '',
           password: ''
         });
+
         // Redirect to home page
         router.push('/');
       })
