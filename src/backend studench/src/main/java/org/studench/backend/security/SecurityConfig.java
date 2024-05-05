@@ -44,7 +44,7 @@ public class SecurityConfig {
                 // Adjust the access permissions
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token").permitAll()
-                        .requestMatchers("/endpoint", "/admin/**").hasRole("ADMIN")
+                        .requestMatchers( "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

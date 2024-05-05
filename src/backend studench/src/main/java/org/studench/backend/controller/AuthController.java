@@ -40,7 +40,11 @@ public class AuthController {
 
         @PostMapping("/login")
         public ResponseEntity<Map<String,String>> signIn(@RequestBody @Valid LoginDto request) {
+        try {
             return ResponseEntity.ok(authenticationService.signIn(request));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
         }
 
     @PostMapping("/refresh-token")

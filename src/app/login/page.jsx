@@ -10,9 +10,14 @@ import { useDispatch } from 'react-redux'
 const LoginPage = () => {
   const dispatch = useDispatch()
   const [userData, setUserData] = useState({
-    nickname: '',
+    username: '',
     password: ''
   })
+
+  const [error, setError] = useState('');
+
+
+
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -25,15 +30,52 @@ const LoginPage = () => {
 
   const router = useRouter()
   const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(logIn({ nickname: userData.nickname, password: userData.password }))
-    console.log(userData)
-    setUserData({
-      nickname: '',
-      password: ''
+    e.preventDefault();
+
+    // Validation
+    if (!userData.username || !userData.password) {
+      setError('Будь ласка, заповніть всі поля');
+      return;
+    }
+
+    // Clear error message
+    setError('');
+
+    // Send POST request
+    fetch('http://localhost:8080/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: userData.username,
+        password: userData.password
+      })
     })
-    router.push('/')
-  }
+      //  if response status is not 200, throw an error
+      .then(response => {
+        if (!response.ok) {
+          setError('Неправильний логін або пароль');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Dispatch login action
+        dispatch(logIn({ username: userData.username, password: userData.password }));
+        console.log(data); // You may handle response data here
+        // Clear form data
+        setUserData({
+          username: '',
+          password: ''
+        });
+        // Redirect to home page
+        router.push('/');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle error if necessary
+      });
+  };
 
   return (
     <CustomSection direction="col" center="items-center justify-center">
@@ -41,9 +83,9 @@ const LoginPage = () => {
         <h4 className="text-[20px] sm:text-4xl text-center text-primary">Увійти в особистий кабінет</h4>
         <form className="grid grid-cols-2 gap-x-2 gap-y-1.5 place-items-stretch w-full" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
-            <label htmlFor="nickname" className="text-primary">Нікнейм</label>
-            <input type="text" id="nickname" className="input p-1 text-black-pearl rounded-sm"
-                   onChange={handleChange} value={userData.nickname} />
+            <label htmlFor="username" className="text-primary">Нікнейм</label>
+            <input type="text" id="username" className="input p-1 text-black-pearl rounded-sm"
+                   onChange={handleChange} value={userData.username} />
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="password" className="text-primary">Пароль</label>
@@ -54,6 +96,9 @@ const LoginPage = () => {
             <Button type="submit" width="w-full">Увійти</Button>
           </div>
         </form>
+        <div>
+        {error && <p className="text-[#dc2626]">{error}</p>}
+        </div>
       </div>
     </CustomSection>
   )
