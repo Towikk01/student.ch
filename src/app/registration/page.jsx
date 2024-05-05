@@ -7,11 +7,12 @@ import { useDispatch } from 'react-redux'
 
 const RegistrationPage = () => {
   const dispatch = useDispatch()
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
-    name: '',
-    secondName: '',
-    nickname: '',
-    role: 'Користувач',
+    firstName: '',
+    lastName: '',
+    username: '',
+    roleId: '',
     password: '',
     confirmPassword: ''
   })
@@ -26,20 +27,32 @@ const RegistrationPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match.')
+      setError('Введений пароль не співпадає з підтвердженням')
       setFormData({ ...formData, password: '', confirmPassword: '' })
     } else {
-      setFormData({
-        name: '',
-        secondName: '',
-        nickname: '',
-        role: 'Користувач',
-        password: '',
-        confirmPassword: ''
+      fetch('http://localhost:8080/auth/sign-up', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          username: formData.username,
+          password: formData.password,
+          roleId: 3
+        })
       })
+        .then(response => {
+          if (!response.ok) {
+            setError('Користувач з таким нікнеймом вже існує')
+          } else {
+            alert('Ви успішно зареєструвались')
+            return response.json()
+          }
+        })
     }
   }
-
 
   return (
     <CustomSection direction="col" center="items-center">
@@ -51,21 +64,21 @@ const RegistrationPage = () => {
           іміджбордом.</h2>
         <div className="flex flex-col w-full md:grid md:grid-cols-2 place-items-center gap-y-1.5 px-3.5 gap-x-5">
           <label className="md:col-span-2 text-primary">Імʼя та прізвище</label>
-          <input type="text" placeholder="Ім’я" name="name"
+          <input type="text" placeholder="Ім’я" name="firstName"
                  className="md:px-2 py-2 px-0.5 text-black-pearl w-full border border-primary rounded-md" required
-                 value={formData.name}
+                 value={formData.firstName}
                  onChange={handleChange} />
-          <input type="text" placeholder="Прізвище" name="secondName"
+          <input type="text" placeholder="Прізвище" name="lastName"
                  className="md:px-2 py-2 px-0.5 border w-full text-black-pearl border-primary rounded-md"
-                 required value={formData.secondName}
+                 required value={formData.lastName}
                  onChange={handleChange} />
         </div>
         <div className="flex flex-col md:grid gap-y-1.5 px-3.5 place-items-center ">
           <label className="text-primary">Нікнейм</label>
           <input type="text" placeholder="Нікнейм"
                  className="md:px-2 w-full py-2 px-0.5 text-black-pearl border border-primary rounded-md"
-                 name="nickname"
-                 value={formData.nickname}
+                 name="username"
+                 value={formData.username}
                  onChange={handleChange}
                  required />
         </div>
@@ -82,8 +95,12 @@ const RegistrationPage = () => {
           <Button width="w-fit md:w-full" type="submit">Зареєструватися</Button>
         </div>
       </form>
+      <div>
+        {error && <p className="text-[#dc2626]">{error}</p>}
+      </div>
     </CustomSection>
   )
 }
+
 
 export default RegistrationPage
