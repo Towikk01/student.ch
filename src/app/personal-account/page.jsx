@@ -110,9 +110,9 @@ const PersonalAccountPage = () => {
         <div className="flex flex-col gap-1">
           <h6 className="text-peach text-sm text-center">Ваші вподобайки</h6>
           <div className="flex flex-col sm:flex-row w-full justify-evenly items-center  gap-3">
-            {userLikesData.map((like, index) => (
-              <Link href={`/${like}`} key={index} className="bg-peach/80 px-1.5 py-1.5 rounded-sm">{like}</Link>
-            ))}
+            {/*{userLikesData.map((like, index) => (*/}
+            {/*  <Link href={`/${like}`} key={index} className="bg-peach/80 px-1.5 py-1.5 rounded-sm">{like}</Link>*/}
+            {/*))}*/}
           </div>
         </div>
       </div>

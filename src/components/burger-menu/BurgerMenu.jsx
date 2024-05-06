@@ -3,9 +3,34 @@ import CustomLink from '@/components/header/CustomLink'
 import { dataLinks } from '@/components/header/Header'
 import Button from '@/components/button/Button'
 import Link from 'next/link'
+import { isLoggedIn, logOut } from '@/lib/slices/userSlice/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
 
 const BurgerMenu = ({ toggle, opened, dataLinks, isLoggedIn }) => {
 
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const isLoggedInState = useSelector(state => state.user.isLoggedIn);
+
+
+  const handleLogout = () => {
+    fetch('http://localhost:8080/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          console.log('Помилка при виході')
+        } else {
+          dispatch(logOut())
+          router.push('/')
+        }
+      })
+  }
   return (
     <div className="relative z-40 cursor-pointer py-1 md:hidden" onClick={toggle}>
       <div
@@ -21,9 +46,9 @@ const BurgerMenu = ({ toggle, opened, dataLinks, isLoggedIn }) => {
             ))}
           </ul>
           <div className="flex flex-col gap-1 md:gap-2 lg:gap-3 items-center">
-            {isLoggedIn ? <Button onClick={(e) => logOut(e)}>Вийти</Button> :
+            {isLoggedInState ? <Button onClick={(e) => handleLogout()}>Вийти</Button> :
               <Button><Link href="/login">Увійти</Link></Button>}
-            {isLoggedIn ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
+            {isLoggedInState ? null : <Button><Link href="/registration">Зареєструватися</Link></Button>}
           </div>
         </nav>
       </div>

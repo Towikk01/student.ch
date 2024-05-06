@@ -9,6 +9,8 @@ import { useAuth } from '@/app/UserProvider'
 import BurgerMenu from '@/components/burger-menu/BurgerMenu'
 import { logOut, logIn, isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { router } from 'next/client'
+import { useRouter } from 'next/navigation'
 
 const dataLinks = [
   { title: 'Домашня', href: '/' },
@@ -22,9 +24,28 @@ const Header = () => {
   const dispatch = useDispatch()
   const LoggedIn = useSelector(isLoggedIn)
   const [opened, setOpened] = useState(false)
+  const router = useRouter()
 
   const toggleMenu = () => {
     setOpened(!opened)
+  }
+
+  const handleLogout = () => {
+    fetch('http://localhost:8080/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    }
+    })
+      .then(response => {
+        if (!response.ok) {
+          console.log('Помилка при виході')
+        } else {
+          dispatch(logOut())
+          router.push('/')
+        }
+      })
   }
   return (
     <header
@@ -44,7 +65,7 @@ const Header = () => {
           </ul>
         </nav>
         <div className="hidden sm:flex flex-row gap-1 md:gap-2 lg:gap-3 items-center">
-          {LoggedIn ? <Button onClick={(e) => dispatch(logOut())}>Вийти</Button> :
+          {LoggedIn ? <Button onClick={(e) => handleLogout()}>Вийти</Button> :
             <Button><Link href="/login">Увійти</Link></Button>}
           {LoggedIn ? <Button><Link href="/personal-account">Особистий кабінет</Link></Button> :
             <Button><Link href="/registration">Зареєструватися</Link></Button>}
