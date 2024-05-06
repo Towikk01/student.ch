@@ -1,1 +1,2 @@
 INSERT INTO roles (id, name) VALUES (1, 'ADMIN'), (2, 'MODERATOR'), (3, 'USER') ON CONFLICT DO NOTHING;
+INSERT INTO thread_themes(id, name) VALUES (1, 'STUDY'), (2, 'DORMITORY'), (3, 'FOOD') ON CONFLICT DO NOTHING;

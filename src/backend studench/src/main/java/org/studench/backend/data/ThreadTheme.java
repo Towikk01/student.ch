@@ -5,13 +5,13 @@ import lombok.Data;
 import lombok.Getter;
 
 @Data
-@Table(name = "roles")
 @Entity
-public class Role {
+@Table(name = "thread_themes")
+
+public class ThreadTheme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(name = "name")
+    private Long id;
     private String name;
-//    ROLES: USER, MODERATOR, ADMIN
+//   LEARNING, DORMITORY, CANTEEN
 }

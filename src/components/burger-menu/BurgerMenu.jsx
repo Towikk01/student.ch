@@ -26,6 +26,7 @@ const BurgerMenu = ({ toggle, opened, dataLinks, isLoggedIn }) => {
         if (!response.ok) {
           console.log('Помилка при виході')
         } else {
+          localStorage.clear()
           dispatch(logOut())
           router.push('/')
         }

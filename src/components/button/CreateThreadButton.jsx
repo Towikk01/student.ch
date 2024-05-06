@@ -1,76 +1,124 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addDormThread } from '@/lib/slices/dorm-threads/dormThreadsSlice'
-import { addFoodThread } from '@/lib/slices/food-threads/foodThreadsSlice'
-import { addStudyThread } from '@/lib/slices/study-threads/studyThreadsSlice'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { addDormThread } from '@/lib/slices/dorm-threads/dormThreadsSlice';
+import { addFoodThread } from '@/lib/slices/food-threads/foodThreadsSlice';
+import { addStudyThread } from '@/lib/slices/study-threads/studyThreadsSlice';
 
 const CreateThreadButton = ({ category }) => {
-  const dispatch = useDispatch()
-  const [isOpen, setIsOpen] = useState(false)
+  let categoryId = 0;
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
   const [thread, setThread] = useState({
     title: '',
     text: '',
-    image: null
-  })
+    image: null,
+  });
 
-  const handleInputChange = e => {
-    const { name, value, files, type } = e.target
-    setThread({
-      ...thread,
-      [name]: type === 'file' ? files[0] : value
-    })
-  }
+
+  const handleInputChange = (e) => {
+    const { name, value, files, type } = e.target;
+    if (type === 'file') {
+      setThread({
+        ...thread,
+        image: files[0],
+      });
+
+    } else {
+      setThread({
+        ...thread,
+        [name]: value,
+      });
+    }
+    }
+
+
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const { title, text, image } = thread
-    const threadData = { title, text, image }
+    e.preventDefault();
+    const { title, text, image } = thread;
+    const threadData = { title, text, image };
+
     switch (category) {
       case 'food':
-        dispatch(addFoodThread(threadData))
-        break
+        categoryId = 3;
+        dispatch(addFoodThread(threadData));
+        break;
       case 'dorm':
-        dispatch(addDormThread(threadData))
-        break
+        categoryId = 2;
+        dispatch(addDormThread(threadData));
+        break;
       case 'study':
-        dispatch(addStudyThread(threadData))
-        break
+        categoryId = 1;
+        dispatch(addStudyThread(threadData));
+        break;
       default:
-        alert('Unknown category')
+        alert('Unknown category');
     }
-    setIsOpen(false)
-    setThread({
-      title: '',
-      text: '',
-      image: null
+
+
+    const formData = new FormData();
+    formData.append('title', thread.title);
+    formData.append('text', thread.text);
+    formData.append('themeId', categoryId);
+    if (image) { // Check if image is selected before appending
+      formData.append('image', image);
+    }
+
+    console.log("Image: ", thread.image);
+
+    axios.post('http://localhost:8080/thread/create', formData, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        'Content-Type': 'multipart/form-data',
+      }
     })
+      .then((response) => {
+        // Handle success
+        console.log(response.data);
+        console.log(response.statusText);
+        setIsOpen(false);
+        setThread({
+          title: '',
+          text: '',
+          image: null,
+
+        });
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error:', error);
+      });
   }
 
+
   const handleOpen = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="relative flex flex-col w-full items-center">
       <button
-        className="bg-black-pearl hover:bg-black-pearl/50 text-primary  border-peach border font-bold py-2 px-4 rounded"
-        onClick={handleOpen}>
+        className="bg-black-pearl hover:bg-black-pearl/50 text-primary border-peach border font-bold py-2 px-4 rounded"
+        onClick={handleOpen}
+      >
         Створити тред
       </button>
       {isOpen && (
-        <div
-          className="absolute top-full bg-black-pearl mt-1 w-full max-w-[400px] p-4 border border-orange z-50 rounded shadow-lg bg-white">
+        <div className="absolute top-full bg-black-pearl mt-1 w-full max-w-[400px] p-4 border border-orange z-50 rounded shadow-lg bg-white">
           <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <div className="mb-4 w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Заголовок
               </label>
-              <input type="text"
-                     name="title"
-                     onChange={handleInputChange}
-                     required
-                     value={thread.title}
-                     className="shadow text-black-pearl appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              <input
+                type="text"
+                name="title"
+                onChange={handleInputChange}
+                required
+                value={thread.title}
+                className="shadow text-black-pearl appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
             </div>
             <div className="w-full">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -82,26 +130,30 @@ const CreateThreadButton = ({ category }) => {
                 value={thread.text}
                 onChange={handleInputChange}
                 className="shadow text-black-pearl appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                rows="3"></textarea>
+                rows="3"
+              ></textarea>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Додати зображення
               </label>
-              <input type="file"
-                     required
-                     value={thread.image}
-                     onChange={handleInputChange}
-                     className="appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              <input
+                type="file"
+                onChange={handleInputChange}
+                className="appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
             </div>
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
               Запостити!
             </button>
           </form>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CreateThreadButton
+export default CreateThreadButton;

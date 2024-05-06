@@ -66,6 +66,8 @@ const LoginPage = () => {
         // Clear form data
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;
+        localStorage.setItem('username', userData.username);
+        localStorage.setItem('password', userData.password);
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         setUserData({

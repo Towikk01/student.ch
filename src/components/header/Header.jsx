@@ -43,6 +43,7 @@ const Header = () => {
           console.log('Помилка при виході')
         } else {
           dispatch(logOut())
+          localStorage.clear()
           router.push('/')
         }
       })

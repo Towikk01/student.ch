@@ -14,8 +14,9 @@ const AuthProvider = ({ children }) => {
     e.preventDefault()
     setIsLoggedIn(true)
     setAuthUser({
-      name: 'John Doe',
-      nickname: 'JD'
+       username: localStorage.getItem('username'),
+      password: localStorage.getItem('password')
+
     })
   }
   const logOut = (e) => {
@@ -36,17 +37,19 @@ const AuthProvider = ({ children }) => {
     logOut
   }
 
-  // useEffect(() => {
-  //   const subscribe = AuthService.subscribe((user) => {
-  //     if (user) {5
-  //       setIsLoggedIn(true)
-  //       setAuthUser(user)
-  //     } else {
-  //       setIsLoggedIn(false)
-  //       setAuthUser(null)
-  //     }
-  //   })
-  // })
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (accessToken && refreshToken) {
+      // User is logged in, set isLoggedIn to true
+      setIsLoggedIn(true);
+      // Fetch user details or setAuthUser if needed
+    } else {
+      // User is not logged in, set isLoggedIn to false
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={value}>
