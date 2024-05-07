@@ -1,5 +1,6 @@
 package org.studench.backend.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;

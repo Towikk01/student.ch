@@ -1,19 +1,19 @@
 'use client'
 import React, { useState } from 'react'
-import Image from 'next/image'
+import { saveThreadId } from '@/lib/slices/threadSlice/threadSlice'
+import { useDispatch } from 'react-redux';
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import AddToFav from '@/components/button/AddToFav'
 
 const ThreadGlobal = ({
-                        imageUrl,
-                        nickname = 'Анонім',
-                        date = '14.88.2024',
-                        id = '№0',
-                        title = 'Title',
-                        replyUrl = '/0',
-                        text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.`
+                        text,
+                        title,
+                        date,
+                        id,
+                        username,
+                        image
                       }) => {
 
   const loggedIn = useSelector(isLoggedIn)
@@ -36,6 +36,14 @@ const ThreadGlobal = ({
     setShowReplyForm(false)
   }
 
+  const dispatch = useDispatch();
+
+  const handleThreadClick = () => {
+    dispatch(saveThreadId(id));
+  };
+
+
+
   return (
     <article
       className="w-full md:w-fit relative items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
@@ -43,12 +51,12 @@ const ThreadGlobal = ({
       {loggedIn &&
         <AddToFav threadId={id} />
       }
-      {imageUrl &&
-        <div className="w-max h-max">
-          <Image src={imageUrl} alt="Post Image"
-                 className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square" />
-        </div>
-      }
+      {/*{image &&*/}
+      {/*  <div className="w-max h-max">*/}
+      {/*    <Image src={image} alt="Post Image"*/}
+      {/*           className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square" />*/}
+      {/*  </div>*/}
+      {/*}*/}
       {/*Text block */}
       <div className="w-fit flex flex-col gap-2">
         <div className="post-actions flex flex-col sm:flex-row justify-between gap-1.5 items-center">
@@ -79,13 +87,13 @@ const ThreadGlobal = ({
               className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               Сховати
             </button>
-            <Link href={replyUrl}
+            <Link href={`/${id}`} onClick={handleThreadClick}
                   className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               У тред
             </Link>
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
-            <p className="text-[10px] text-primary">{nickname}</p>
+            <p className="text-[10px] text-primary">{username}</p>
             <p className="text-[10px] text-primary">{date}</p>
             <span className="text-[10px] text-primary">{id}</span>
           </div>
