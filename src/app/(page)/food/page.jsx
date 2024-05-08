@@ -38,8 +38,13 @@ const FoodPage = () => {
     fetchData()
   }, [])
 
+
+
   const foodThreads = fetchedData || []
 console.log("Fetch data: ", fetchedData)
+  for (let i = 0; i < foodThreads.length; i++) {
+    console.log("Image ", foodThreads[i].imageData)
+  }
   return (
     <section className="grid md:grid-cols-2 gap-y-1.5 gap-x-1.5">
       {isLoading ? (
@@ -54,7 +59,7 @@ console.log("Fetch data: ", fetchedData)
             date={element.date.slice(0, 10)}
             id={element.id}
             username={element.author.username}
-            image={element.imageData}
+            imageData={element.imageData}
           />
         ))
       )}

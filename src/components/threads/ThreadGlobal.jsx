@@ -13,7 +13,7 @@ const ThreadGlobal = ({
                         date,
                         id,
                         username,
-                        image
+                        imageData
                       }) => {
 
   const loggedIn = useSelector(isLoggedIn)
@@ -47,17 +47,20 @@ const ThreadGlobal = ({
   return (
     <article
       className="w-full md:w-fit relative items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
-      {/*Image block */}
+
       {loggedIn &&
         <AddToFav threadId={id} />
       }
-      {/*{image &&*/}
-      {/*  <div className="w-max h-max">*/}
-      {/*    <Image src={image} alt="Post Image"*/}
-      {/*           className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square" />*/}
-      {/*  </div>*/}
-      {/*}*/}
-      {/*Text block */}
+
+      {imageData &&
+
+        <div className="w-max h-max">
+          <img src={`data:image/png;base64,${imageData}`} alt="Post image"
+               className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square" />
+        </div>
+
+      }
+
       <div className="w-fit flex flex-col gap-2">
         <div className="post-actions flex flex-col sm:flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">

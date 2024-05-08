@@ -37,10 +37,16 @@ const ThreadPage = () => {
       }
     };
 
-    if (threadId) { // Fetch data only if threadId exists
+    if (threadId) {
+      // Fetch data only if threadId exists
       fetchData();
     }
   }, [threadId]); // Fetch data whenever threadId changes
+
+
+
+
+
 
   return (
     <CustomSection direction="col" center="items-start">
@@ -54,6 +60,7 @@ const ThreadPage = () => {
             id={thread.id}
             date={thread.date}
             username={thread.author.username}
+            imageData={thread.imageData}
           />
         )}
         {/* Render ThreadReply components */}

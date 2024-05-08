@@ -9,7 +9,7 @@ export const userSlice = createSlice({
 			username: '',
 			likes: [],
 		},
-		isLoggedIn: false,
+		isLoggedIn: Boolean(localStorage.getItem('accessToken')),
 	},
 	reducers: {
 		logIn(state, action) {
