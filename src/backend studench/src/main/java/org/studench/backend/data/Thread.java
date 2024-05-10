@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;

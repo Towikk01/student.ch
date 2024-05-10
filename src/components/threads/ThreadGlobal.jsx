@@ -99,7 +99,7 @@ const ThreadGlobal = ({
           <div className="flex flex-row gap-1 items-center justify-end">
             <p className="text-[10px] text-primary">{username}</p>
             <p className="text-[10px] text-primary">{date && date.slice(0, 10)}</p>
-            <span className="text-[10px] text-primary">{id}</span>
+            {/*<span className="text-[10px] text-primary">{id}</span>*/}
           </div>
         </div>
         <div className="flex flex-col items-center md:items-start gap-1.5">

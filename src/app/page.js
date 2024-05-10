@@ -12,7 +12,6 @@ export default function Home() {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 				},
 			}).then(response => response.json())
 				.then(data => {
@@ -43,7 +42,7 @@ export default function Home() {
 				<h4 className='text-primary text-base md:text-2xl'>Останні треди</h4>
 				<div className='w-full h-full gap-2 flex flex-col justify-end'>
 					{latestThreads.map((data, index) => (
-						<ThreadGlobal title={data.title} text={data.text} imageData={data.imageData} key={index} />
+						<ThreadGlobal title={data.title} text={data.text} imageData={data.imageData} key={index} id={data.id} />
 					))}
 				</div>
 			</div>

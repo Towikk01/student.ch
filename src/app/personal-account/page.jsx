@@ -6,10 +6,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { user, userLikes, changeUsername, logOut } from '@/lib/slices/userSlice/userSlice'
 import { router } from 'next/client'
 import { useRouter } from 'next/navigation'
+import ThreadGlobal from '@/components/threads/ThreadGlobal'
+import { resetThreadId, saveThreadId } from '@/lib/slices/threadSlice/threadSlice'
 
 const PersonalAccountPage = () => {
   const userData = useSelector(user)
-  const userLikesData = useSelector(userLikes)
+  const [userLikesData, setUserLikesData] = useState([])
   const [username, setUsername] = useState(userData.username)
   const [editMode, setEditMode] = useState(false)
   const dispatch = useDispatch()
@@ -65,7 +67,8 @@ const PersonalAccountPage = () => {
       setEditMode(false)
     }
   }
-console.log("Access token" + localStorage.getItem('accessToken'))
+
+
   useEffect(() => {
     fetch('http://localhost:8080/me/info', {
       method: 'GET',
@@ -94,12 +97,22 @@ console.log("Access token" + localStorage.getItem('accessToken'))
 
 
           } )
-      .catch(error => {
-        console.error('Error:', error)
-
-      }
+      .then(fetch('http://localhost:8080/me/likedThreads', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      }).then(response => response.json())
+        .then(response => setUserLikesData(response)
+        )
       )
   }, [])
+
+  const handleThreadClick = (e) => {
+    dispatch(resetThreadId());
+    dispatch(saveThreadId(e.target.innerText));
+  }
   return (
     <CustomSection direction="col" center="items-center justify-center">
       <h4 className="text-primary md:text-4xl text-base">Ваші данні</h4>
@@ -141,9 +154,10 @@ console.log("Access token" + localStorage.getItem('accessToken'))
         <div className="flex flex-col gap-1">
           <h6 className="text-peach text-sm text-center">Ваші вподобайки</h6>
           <div className="flex flex-col sm:flex-row w-full justify-evenly items-center  gap-3">
-            {/*{userLikesData.map((like, index) => (*/}
-            {/*  <Link href={`/${like}`} key={index} className="bg-peach/80 px-1.5 py-1.5 rounded-sm">{like}</Link>*/}
-            {/*))}*/}
+            {userLikesData.map((like, index) => (
+             <Link onClick={handleThreadClick} href={`/${like.thread.id}`} key={index} className="bg-peach/80 px-1.5 py-1.5 rounded-sm">{like.thread.id}</Link>
+
+            ))}
           </div>
         </div>
       </div>
