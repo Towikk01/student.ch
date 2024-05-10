@@ -41,10 +41,6 @@ const FoodPage = () => {
 
 
   const foodThreads = fetchedData || []
-console.log("Fetch data: ", fetchedData)
-  for (let i = 0; i < foodThreads.length; i++) {
-    console.log("Image ", foodThreads[i].imageData)
-  }
   return (
     <section className="grid md:grid-cols-2 gap-y-1.5 gap-x-1.5">
       {isLoading ? (

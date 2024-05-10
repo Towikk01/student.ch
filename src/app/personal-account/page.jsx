@@ -4,6 +4,8 @@ import CustomSection from '@/components/custom-section/CustomSection'
 import Link from 'next/link'
 import { useSelector, useDispatch } from 'react-redux'
 import { user, userLikes, changeUsername, logOut } from '@/lib/slices/userSlice/userSlice'
+import { router } from 'next/client'
+import { useRouter } from 'next/navigation'
 
 const PersonalAccountPage = () => {
   const userData = useSelector(user)
@@ -11,6 +13,7 @@ const PersonalAccountPage = () => {
   const [username, setUsername] = useState(userData.username)
   const [editMode, setEditMode] = useState(false)
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const [fetchedData, setFetchedData] = useState({
     username: '',
@@ -45,6 +48,7 @@ const PersonalAccountPage = () => {
           localStorage.removeItem('password')
           dispatch(changeUsername(username))
           setEditMode(false)
+          router.push('/login')
         }
       })
 }

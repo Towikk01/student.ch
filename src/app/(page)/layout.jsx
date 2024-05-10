@@ -9,13 +9,12 @@ const ThreadsLayout = ({ children }) => {
   console.log(pathname)
   const titlePath = pathname === '/education' ? 'навчання' : pathname === '/food' ? 'їдальні' : 'гуртожитка'
   const category = pathname === '/education' ? 'study' : pathname === '/food' ? 'food' : 'dorm'
-
-
+  const id = pathname === '/education' ? 1 : pathname === '/dorm' ? 2 : 3
   return (
     <CustomSection direction="col" center="items-center">
       <h3 className="text-primary text-[18px] md:text-4xl">Дошка {titlePath}</h3>
       <CreateThreadButton category={category} />
-      {children}
+          {children}
     </CustomSection>
   )
 }
