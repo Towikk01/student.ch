@@ -12,4 +12,8 @@ public interface ThreadRepo extends JpaRepository<Thread, Long> {
 
     @Query("select t from Thread t where t.theme.id = ?1")
     List<Optional<Thread>> findAllByThemeId(Long themeId);
+
+    @Query("select t from Thread t order by t.date desc")
+
+    List<Thread> findLatestThreads();
 }

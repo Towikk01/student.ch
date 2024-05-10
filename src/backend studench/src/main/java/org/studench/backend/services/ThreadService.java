@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 
 @Service
@@ -86,6 +87,21 @@ public class ThreadService {
             }
         }
         return thread;
+    }
+
+    public List<Thread> getLatestThreads() {
+        List<Thread> threads = threadRepo.findLatestThreads();
+        for (Thread thread : threads) {
+            if (thread.getImageData() != null) {
+                try {
+                    thread.setImageData(ImageUtil.decompressImage(thread.getImageData()));
+                } catch (DataFormatException | IOException e) {
+                    log.error("Error while decompressing image", e);
+                }
+            }
+        }
+        List <Thread> slice = threads.stream().limit(10).toList();
+        return slice;
     }
 
 

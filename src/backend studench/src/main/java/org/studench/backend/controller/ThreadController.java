@@ -50,4 +50,14 @@ public class ThreadController {
         }
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<List<Thread>> getLatestThreads() {
+        try {
+            return ResponseEntity.ok().body(threadService.getLatestThreads());
+        } catch (Exception e) {
+            log.error("Error while getting latest threads", e);
+            throw new RuntimeException("Error while getting latest threads", e);
+        }
+    }
+
 }
