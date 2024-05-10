@@ -47,11 +47,15 @@ const RegistrationPage = () => {
         })
       })
         .then(response => {
-          if (!response.ok) {
+          if (response.status === 409) {
             setError('Користувач з таким нікнеймом вже існує')
-          } else {
+          } else if (response.status === 400) {
+            setError('Помилка введених даних')
+          } else if (response.status === 201 || response.status === 200) {
             alert('Ви успішно зареєструвались')
             return response.json()
+          } else {
+            setError('Помилка сервера')
           }
         }
         )

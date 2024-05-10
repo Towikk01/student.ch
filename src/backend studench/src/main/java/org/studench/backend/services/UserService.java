@@ -68,5 +68,8 @@ public class UserService {
         }
 
 
+        boolean existsByUsername(String username) {
+            return repository.existsByUsername(username);
+        }
     }
 

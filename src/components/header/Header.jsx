@@ -23,6 +23,7 @@ const dataLinks = [
 const Header = () => {
   const dispatch = useDispatch()
   const LoggedIn = useSelector(isLoggedIn)
+  console.log("Logged in: ", LoggedIn)
   const [opened, setOpened] = useState(false)
   const router = useRouter()
 
@@ -39,7 +40,7 @@ const Header = () => {
     }
     })
       .then(response => {
-        if (!response.ok) {
+        if (!response.status === 200) {
           console.log('Помилка при виході')
         } else {
           dispatch(logOut())

@@ -4,7 +4,7 @@ import CustomSection from '@/components/custom-section/CustomSection';
 import ThreadGlobal from '@/components/threads/ThreadGlobal';
 import ThreadReply from '@/components/threads/ThreadReply';
 import { useDispatch, useSelector } from 'react-redux'
-import { selectThreadId, resetThreadId } from '@/lib/slices/threadSlice/threadSlice';
+import { selectThreadId} from '@/lib/slices/threadSlice/threadSlice';
 
 const ThreadPage = () => {
   const threadId = useSelector(selectThreadId); // Get thread ID from Redux store
@@ -33,7 +33,7 @@ const ThreadPage = () => {
         setError("Error fetching threads");
       } finally {
         setIsLoading(false);
-        dispatch(resetThreadId());
+
       }
     };
 
@@ -44,6 +44,10 @@ const ThreadPage = () => {
   }, [threadId]); // Fetch data whenever threadId changes
 
 
+  useEffect(() => {
+    localStorage.setItem('threadId', threadId);
+  }, [threadId, dispatch]);
+
 
 
 
@@ -51,7 +55,6 @@ const ThreadPage = () => {
   return (
     <CustomSection direction="col" center="items-start">
       <div className="grid grid-cols-1 gap-y-1.5">
-        {isLoading && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {thread && (
           <ThreadGlobal

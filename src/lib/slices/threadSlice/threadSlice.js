@@ -5,7 +5,7 @@ import {createSlice} from '@reduxjs/toolkit';
 export const threadSlice = createSlice({
 	name: 'thread',
 	initialState: {
-		id: null,
+		id: localStorage.getItem('threadId') || null,
 	},
 	reducers: {
 		saveThreadId(state, action) {

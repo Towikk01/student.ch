@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
-    if (accessToken && refreshToken) {
+    if (accessToken) {
       // User is logged in, set isLoggedIn to true
       setIsLoggedIn(true);
       // Fetch user details or setAuthUser if needed

@@ -1,5 +1,6 @@
 package org.studench.backend.services;
 
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.studench.backend.data.User;
 import org.studench.backend.dto.LoginDto;
 import org.studench.backend.dto.SignUpDto;
+import org.studench.backend.exceptions.UsernameAlreadyExistsException;
 import org.studench.backend.repo.RolesRepo;
 
 import java.util.HashMap;
@@ -30,19 +32,32 @@ public class AuthService {
      */
     public String signUp(SignUpDto request) {
 
-       User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(rolesRepo.findById(request.getRoleId()).orElseThrow());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
+        boolean exists = userService.existsByUsername(request.getUsername());
+        if (exists) {
+            throw new UsernameAlreadyExistsException("User with this username already exists");
+        }
+        else if (request.getUsername().length() < 5 || request.getUsername().length()> 50) {
+            throw new ValidationException("Username should be between 5 and 50 characters");
+        }
+       try {
+           User user = new User();
 
-        userService.create(user);
+           user.setUsername(request.getUsername());
+           user.setPassword(passwordEncoder.encode(request.getPassword()));
+           user.setRole(rolesRepo.findById(request.getRoleId()).orElseThrow());
+           user.setFirstName(request.getFirstName());
+           user.setLastName(request.getLastName());
+
+           userService.create(user);
 
 
-        String accessToken= jwtService.generateAccessToken(user);
+           String accessToken = jwtService.generateAccessToken(user);
 
-        return accessToken;
+           return accessToken;
+       }
+         catch (Exception e) {
+              throw new RuntimeException(e);
+         }
 
     }
 

@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { saveThreadId } from '@/lib/slices/threadSlice/threadSlice'
+import { resetThreadId, saveThreadId } from '@/lib/slices/threadSlice/threadSlice'
 import { useDispatch } from 'react-redux';
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
@@ -39,6 +39,7 @@ const ThreadGlobal = ({
   const dispatch = useDispatch();
 
   const handleThreadClick = () => {
+    dispatch(resetThreadId());
     dispatch(saveThreadId(id));
   };
 
@@ -97,7 +98,7 @@ const ThreadGlobal = ({
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
             <p className="text-[10px] text-primary">{username}</p>
-            <p className="text-[10px] text-primary">{date}</p>
+            <p className="text-[10px] text-primary">{date && date.slice(0, 10)}</p>
             <span className="text-[10px] text-primary">{id}</span>
           </div>
         </div>

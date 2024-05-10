@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,7 +32,10 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "registered_at")
-    private LocalDate registered_at;
+    private LocalDateTime registered_at;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updated_at;
 
     @ManyToOne
     private Role role;
@@ -62,7 +66,8 @@ public class User implements UserDetails {
     }
 
     public User() {
-        this.registered_at = LocalDate.now();
+        this.registered_at = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
     }
 
     @Override

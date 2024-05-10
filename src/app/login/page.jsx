@@ -56,14 +56,13 @@ const LoginPage = () => {
       .then(response => {
         if (!response.ok) {
           setError('Неправильний логін або пароль');
+        } else {
+          // Parse response body as JSON
+          return response.json();
         }
-        return response.json();
       })
       .then(data => {
-        // Dispatch login action
-        dispatch(logIn({ username: userData.username, password: userData.password }));
-        console.log(data); // You may handle response data here
-        // Clear form data
+        // Access tokens from the parsed JSON data
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;
         localStorage.setItem('username', userData.username);
@@ -74,6 +73,7 @@ const LoginPage = () => {
           username: '',
           password: ''
         });
+        dispatch(logIn({ username: userData.username, password: userData.password }));
 
         // Redirect to home page
         router.push('/');

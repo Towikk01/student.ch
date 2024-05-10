@@ -56,7 +56,7 @@ console.log("Fetch data: ", fetchedData)
           <ThreadGlobal
             text={element.text}
             title={element.title}
-            date={element.date.slice(0, 10)}
+            date={element.date}
             id={element.id}
             username={element.author.username}
             imageData={element.imageData}

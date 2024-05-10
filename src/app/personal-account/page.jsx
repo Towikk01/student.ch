@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import CustomSection from '@/components/custom-section/CustomSection'
 import Link from 'next/link'
 import { useSelector, useDispatch } from 'react-redux'
-import { user, userLikes, changeNickname } from '@/lib/slices/userSlice/userSlice'
+import { user, userLikes, changeUsername, logOut } from '@/lib/slices/userSlice/userSlice'
 
 const PersonalAccountPage = () => {
   const userData = useSelector(user)
   const userLikesData = useSelector(userLikes)
-  const [nickname, setNickname] = useState(userData.nickname)
+  const [username, setUsername] = useState(userData.username)
   const [editMode, setEditMode] = useState(false)
   const dispatch = useDispatch()
 
@@ -23,15 +23,36 @@ const PersonalAccountPage = () => {
     setEditMode(!editMode)
   }
 
-  const handleChangeNickname = () => {
-    if (nickname !== userData.nickname) {
-      dispatch(changeNickname({ nickname }))
-    }
-    setEditMode(false)
+  const handleChangeUsername = () => {
+    if (username !== userData.username) {
+      fetch('http://localhost:8080/me/edit_username', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify({
+          newUsername: username
+        }),
+
+      }).then(response => {
+        if (!response.ok) {
+          console.log('Помилка при зміні імені')
+        } else {
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
+          localStorage.removeItem('username')
+          localStorage.removeItem('password')
+          dispatch(changeUsername(username))
+          setEditMode(false)
+        }
+      })
+}
   }
 
-  const handleNicknameChange = (e) => {
-    setNickname(e.target.value)
+
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value)
   }
 
   const handleOutsideClick = (e) => {
@@ -40,7 +61,7 @@ const PersonalAccountPage = () => {
       setEditMode(false)
     }
   }
-
+console.log("Access token" + localStorage.getItem('accessToken'))
   useEffect(() => {
     fetch('http://localhost:8080/me/info', {
       method: 'GET',
@@ -49,26 +70,32 @@ const PersonalAccountPage = () => {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
       }
     })
-      .then(response => response.json())
       .then(response => {
           if (!response.ok) {
             console.log('Помилка при завантаженні даних')
+          } else {
+            return response.json()
           }
-
-          setFetchedData(
-            {
-              username: response.username,
-              firstName: response.firstName,
-              lastName: response.lastName
-            }
-          )
-
-
         }
       )
-  }
-  , [])
+      .then(response => {
 
+            setFetchedData(
+              {
+                username: response.username,
+                firstName: response.firstName,
+                lastName: response.lastName
+              }
+            )
+
+
+          } )
+      .catch(error => {
+        console.error('Error:', error)
+
+      }
+      )
+  }, [])
   return (
     <CustomSection direction="col" center="items-center justify-center">
       <h4 className="text-primary md:text-4xl text-base">Ваші данні</h4>
@@ -85,13 +112,13 @@ const PersonalAccountPage = () => {
               <div className="flex flex-col gap-2 items-center">
                 <input
                   type="text"
-                  value={fetchedData.username}
-                  onChange={handleNicknameChange}
+                  value={username}
+                  onChange={handleUsernameChange}
                   className="text-black-pearl rounded-[12px] border border-peach outline-0 px-1 py-0.5 text-base"
                   autoFocus
                 />
                 <button
-                  onClick={handleChangeNickname}
+                  onClick={handleChangeUsername}
                   className="text-primary text-[12px] hover:text-peach bg-black-pearl rounded-xl border-orange border px-1 py-1 transition-all duration-200 font-bold sm:absolute right-2 top-2">
                   Зберегти
                 </button>

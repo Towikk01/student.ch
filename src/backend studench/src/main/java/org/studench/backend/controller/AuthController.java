@@ -1,12 +1,15 @@
 package org.studench.backend.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 import org.studench.backend.dto.LoginDto;
 import org.studench.backend.dto.RefreshTokenDto;
 import org.studench.backend.dto.SignUpDto;
+import org.studench.backend.exceptions.UsernameAlreadyExistsException;
 import org.studench.backend.repo.ExpiredTokenRepo;
 import org.studench.backend.repo.RolesRepo;
 import org.studench.backend.services.AuthService;
@@ -29,13 +32,18 @@ public class AuthController {
     @PostMapping("/sign-up")
         public ResponseEntity <String> signUp(@RequestBody @Valid SignUpDto request) {
            try {
-
-
                return  ResponseEntity.ok().body("{\"access_token\":\"" + authenticationService.signUp(request) + "\"}");
            }
-              catch (Exception e) {
-                  return ResponseEntity.badRequest().body("{\"error\":\"User with this username already exists\"}");
+              catch (UsernameAlreadyExistsException e) {
+                  return ResponseEntity.status(409).body("{\"error\":\"" + e.getMessage() + "\"}");
+              } catch (ValidationException e) {
+                  return ResponseEntity.badRequest().body("{\"error\":\"" + e.getMessage() + "\"}");
+
+              } catch (Exception e) {
+                    return ResponseEntity.internalServerError().body("{\"error\":\"" + e.getMessage() + "\"}");
               }
+
+
         }
 
         @PostMapping("/login")

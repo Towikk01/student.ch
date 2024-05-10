@@ -24,8 +24,8 @@ export const userSlice = createSlice({
 			state.isLoggedIn = false;
 			state.user = {firstName: '', lastName: '', username: ''};
 		},
-		changeNickname(state, action) {
-			state.user.username = action.payload.nickname;
+		changeUsername(state, action) {
+			state.user.username = action.payload.username;
 		},
 		toggleFav(state, action) {
 			const threadId = action.payload;
@@ -38,7 +38,7 @@ export const userSlice = createSlice({
 		},
 	},
 });
-export const {logIn, logOut, changeNickname, toggleFav, register} = userSlice.actions;
+export const {logIn, logOut, changeUsername, toggleFav, register} = userSlice.actions;
 export const user = state => state.user.user;
 export const userLikes = state => state.user.user.likes;
 export const isLoggedIn = state => state.user.isLoggedIn;
