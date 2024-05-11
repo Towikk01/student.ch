@@ -5,11 +5,9 @@ import { LogoWB } from '../../../public'
 import Link from 'next/link'
 import CustomLink from '@/components/header/CustomLink'
 import Button from '@/components/button/Button'
-import { useAuth } from '@/app/UserProvider'
 import BurgerMenu from '@/components/burger-menu/BurgerMenu'
-import { logOut, logIn, isLoggedIn } from '@/lib/slices/userSlice/userSlice'
+import { logOut, isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { router } from 'next/client'
 import { useRouter } from 'next/navigation'
 
 const dataLinks = [
@@ -23,7 +21,7 @@ const dataLinks = [
 const Header = () => {
   const dispatch = useDispatch()
   const LoggedIn = useSelector(isLoggedIn)
-  console.log("Logged in: ", LoggedIn)
+  console.log('Logged in: ', LoggedIn)
   const [opened, setOpened] = useState(false)
   const router = useRouter()
 
@@ -37,7 +35,7 @@ const Header = () => {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-    }
+      }
     })
       .then(response => {
         if (!response.status === 200) {

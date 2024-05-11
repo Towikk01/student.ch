@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import { resetThreadId, saveThreadId } from '@/lib/slices/threadSlice/threadSlice'
-import { useDispatch } from 'react-redux';
+import { resetThreadId, saveThreadId, hideThread } from '@/lib/slices/threadSlice/threadSlice'
+import { useDispatch } from 'react-redux'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
@@ -36,13 +36,16 @@ const ThreadGlobal = ({
     setShowReplyForm(false)
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleThreadClick = () => {
-    dispatch(resetThreadId());
-    dispatch(saveThreadId(id));
-  };
+    dispatch(resetThreadId())
+    dispatch(saveThreadId(id))
+  }
 
+  const handleHideThread = (id) => {
+    dispatch(hideThread(id))
+  }
 
 
   return (
@@ -54,7 +57,6 @@ const ThreadGlobal = ({
       }
 
       {imageData &&
-
         <div className="w-max h-max">
           <img src={`data:image/png;base64,${imageData}`} alt="Post image"
                className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square" />
@@ -88,6 +90,7 @@ const ThreadGlobal = ({
               </div>
             }
             <button
+              onClick={handleHideThread.bind(null, id)}
               className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               Сховати
             </button>
