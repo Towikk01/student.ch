@@ -44,6 +44,18 @@ const ThreadGlobal = ({
   }
 
   const handleHideThread = (id) => {
+    fetch(`http://localhost:8080/thread/${id}/hide`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    },
+    }).then(response => {
+      if (!response.ok) {
+        console.log('Помилка при сховуванні')
+      }
+    }
+    )
     dispatch(hideThread(id))
   }
 
@@ -89,11 +101,13 @@ const ThreadGlobal = ({
                 )}
               </div>
             }
+            {loggedIn &&
             <button
               onClick={handleHideThread.bind(null, id)}
               className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               Сховати
             </button>
+            }
             <Link href={`/${id}`} onClick={handleThreadClick}
                   className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               У тред

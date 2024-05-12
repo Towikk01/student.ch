@@ -12,6 +12,7 @@ export default function Home() {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : '',
 				},
 			}).then(response => response.json())
 				.then(data => {

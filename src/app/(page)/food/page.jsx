@@ -16,7 +16,11 @@ const FoodPage = () => {
 
       try {
         const response = await fetch('http://localhost:8080/thread/all/3', {
-          method: 'GET'
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : '',
+          }
         })
 
         if (!response.ok) {
@@ -25,7 +29,6 @@ const FoodPage = () => {
         } else {
           const data = await response.json()
           setFetchedData(data)
-          console.log("Дані успішно завантажені")
         }
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -41,6 +44,7 @@ const FoodPage = () => {
 
 
   const foodThreads = fetchedData || []
+  console.log("Fetch data", foodThreads)
   return (
     <section className="grid md:grid-cols-2 gap-y-1.5 gap-x-1.5">
       {isLoading ? (

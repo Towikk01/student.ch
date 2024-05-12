@@ -8,14 +8,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.multipart.MultipartFile;
-import org.studench.backend.data.ThreadLike;
-import org.studench.backend.data.ThreadTheme;
-import org.studench.backend.data.User;
+import org.studench.backend.data.*;
+import org.studench.backend.data.Thread;
 import org.studench.backend.dto.ThreadDto;
 import org.studench.backend.dto.ThreadLikeDto;
+import org.studench.backend.repo.HideThreadRepo;
 import org.studench.backend.repo.ThreadLikeRepo;
 import org.studench.backend.repo.ThreadRepo;
-import org.studench.backend.data.Thread;
 import org.studench.backend.repo.ThreadThemeRepo;
 import org.studench.backend.utils.ImageUtil;
 
@@ -34,6 +33,7 @@ public class ThreadService {
     private final ThreadRepo threadRepo;
     private final ThreadThemeRepo threadThemeRepo;
     private final ThreadLikeRepo threadLikeRepo;
+    private final HideThreadRepo hideThreadRepo;
 
 
     public Long createThread(ThreadDto threadDto, MultipartFile image) throws IOException {
@@ -58,26 +58,27 @@ public class ThreadService {
 
 
     public List<Thread> getThreadsByTheme(Long themeId) {
-        List< Optional<Thread> > threads = threadRepo.findAllByThemeId(themeId);
+        List<Thread> foundThreads = threadRepo.findAllByThemeId(themeId);
+        List<Thread> threads = filterHiddenThreads(foundThreads);
+        System.out.println("Threads: " + threads);
+
 
 //        get threads and for each thread get image and decompress it
-        for (Optional<Thread> thread : threads) {
-            if (thread.isPresent()) {
-                Thread t = thread.get();
-                if (t.getImageData() != null) {
+        for (Thread thread : threads) {
+                if (thread.getImageData() != null) {
                     try {
-                        t.setImageData(ImageUtil.decompressImage(t.getImageData()));
+                        thread.setImageData(ImageUtil.decompressImage(thread.getImageData()));
                     } catch (DataFormatException | IOException e) {
                         log.error("Error while decompressing image", e);
                     }
                 }
-            }
+
         }
 
 
 
 //         add isPresent() check to avoid NullPointerException
-        return threads.stream().filter(Optional::isPresent).map(Optional::get).toList();
+        return threads;
 
     }
 
@@ -94,7 +95,9 @@ public class ThreadService {
     }
 
     public List<Thread> getLatestThreads() {
-        List<Thread> threads = threadRepo.findLatestThreads();
+        List<Thread> foundThreads = threadRepo.findLatestThreads();
+        List<Thread> threads = filterHiddenThreads(foundThreads);
+
         for (Thread thread : threads) {
             if (thread.getImageData() != null) {
                 try {
@@ -109,6 +112,13 @@ public class ThreadService {
     }
 
 
+    public List <Thread> filterHiddenThreads (List<Thread> threads){
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() != "anonymousUser") {
+            User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            threads.removeIf(thread -> hideThreadRepo.findByUserIdAndThreadId(currentUser.getId(), thread.getId()).isPresent());
+        }
+     return threads;
+    }
 
 
 
@@ -154,6 +164,16 @@ public class ThreadService {
             return true;
         }
         return false;
+    }
+
+    public boolean hideThread(Long threadId) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Thread thread = threadRepo.findById(threadId).orElseThrow(() -> new IllegalArgumentException("Thread with id " + threadId + " not found"));
+        HideThread hideThread = new HideThread();
+        hideThread.setUser(currentUser);
+        hideThread.setThread(thread);
+        hideThreadRepo.save(hideThread);
+        return hideThreadRepo.findByUserIdAndThreadId(currentUser.getId(), threadId).isPresent();
     }
 
 

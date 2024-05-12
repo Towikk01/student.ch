@@ -107,5 +107,22 @@ public class ThreadController {
         }
     }
 
+    @PostMapping("/{threadId}/hide")
+    public ResponseEntity<String> hideThread(@PathVariable Long threadId) {
+        try {
+            boolean isHidden = threadService.hideThread(threadId);
+            if (isHidden) {
+                return ResponseEntity.ok().body("{\"message\":\"Thread hidden\"}");
+            } else {
+                return ResponseEntity.badRequest().body("{\"message\":\"Something went wrong\"}");
+            }
+        } catch (Exception e) {
+            log.error("Error while hiding thread", e);
+            throw new RuntimeException("Error while hiding thread", e);
+        }
+    }
+
+
+
 
 }

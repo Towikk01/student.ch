@@ -65,8 +65,11 @@ const EducationPage = () => {
 
       try {
         const response = await fetch('http://localhost:8080/thread/all/1', {
-          method: 'GET'
-        })
+          method: 'GET',
+            headers: {
+              Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : ''
+            }
+          })
 
         if (!response.ok) {
           console.log("Помилка при завантаженні даних " + response.statusText)
