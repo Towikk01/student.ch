@@ -1,6 +1,12 @@
 'use client'
 import React, { useState } from 'react'
-import { resetThreadId, saveThreadId, hideThread } from '@/lib/slices/threadSlice/threadSlice'
+import {
+  resetThreadId,
+  saveThreadId,
+  hideThread,
+  threadSlice,
+  selectThreadId, changeIsInThread, selectIsInThread
+} from '@/lib/slices/threadSlice/threadSlice'
 import { useDispatch } from 'react-redux'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
@@ -41,6 +47,12 @@ const ThreadGlobal = ({
   const handleThreadClick = () => {
     dispatch(resetThreadId())
     dispatch(saveThreadId(id))
+    dispatch(changeIsInThread())
+
+  }
+  const handleBackClick = () => {
+    dispatch(changeIsInThread())
+    dispatch(resetThreadId())
   }
 
   const handleHideThread = (id) => {
@@ -59,7 +71,7 @@ const ThreadGlobal = ({
     dispatch(hideThread(id))
   }
 
-
+console.log("isInThread", useSelector(selectIsInThread))
   return (
     <article
       className="w-full md:w-fit relative items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
@@ -108,10 +120,18 @@ const ThreadGlobal = ({
               Сховати
             </button>
             }
+            { !useSelector(selectIsInThread) && (
             <Link href={`/${id}`} onClick={handleThreadClick}
                   className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               У тред
             </Link>
+            )}
+            { useSelector(selectIsInThread) && (
+            <Link href="/" onClick={handleBackClick}
+                  className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+              Назад
+            </Link>
+            )}
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
             <p className="text-[10px] text-primary">{username}</p>

@@ -7,6 +7,7 @@ export const threadSlice = createSlice({
 	initialState: {
 		id: localStorage.getItem('threadId') || null,
 		hiddenThreads: [],
+		isInThread: false,
 	},
 	reducers: {
 		saveThreadId(state, action) {
@@ -21,6 +22,9 @@ export const threadSlice = createSlice({
 				state.hiddenThreads.push(threadId);
 			}
 		},
+		changeIsInThread(state) {
+			state.isInThread = !state.isInThread;
+		},
 	},
 });
 
@@ -28,9 +32,11 @@ export const {
 	saveThreadId,
 	resetThreadId,
 	hideThread,
+	changeIsInThread,
 } = threadSlice.actions;
 
 export const selectThreadId = state => state.thread.id;
+export const selectIsInThread = state => state.thread.isInThread;
 export const selectHiddenThreads = state => state.thread.hiddenThreads;
 
 export default threadSlice.reducer;
