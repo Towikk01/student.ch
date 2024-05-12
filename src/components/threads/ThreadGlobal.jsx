@@ -1,11 +1,11 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   resetThreadId,
   saveThreadId,
   hideThread,
   threadSlice,
-  selectThreadId, changeIsInThread, selectIsInThread
+  selectThreadId, changeIsInThread, selectIsInThread, changeIsNotInThread
 } from '@/lib/slices/threadSlice/threadSlice'
 import { useDispatch } from 'react-redux'
 import Link from 'next/link'
@@ -28,6 +28,7 @@ const ThreadGlobal = ({
     text: '',
     image: null
   })
+
   const handleInputChange = e => {
     const { name, value, files, type } = e.target
     setReply({
@@ -47,12 +48,12 @@ const ThreadGlobal = ({
   const handleThreadClick = () => {
     dispatch(resetThreadId())
     dispatch(saveThreadId(id))
-    dispatch(changeIsInThread())
-
+      dispatch(changeIsInThread())
   }
   const handleBackClick = () => {
-    dispatch(changeIsInThread())
+
     dispatch(resetThreadId())
+    dispatch(changeIsNotInThread())
   }
 
   const handleHideThread = (id) => {
@@ -93,11 +94,13 @@ console.log("isInThread", useSelector(selectIsInThread))
           <div className="flex flex-row gap-1.5 items-center ">
             {loggedIn &&
               <div className="relative flex">
+                {useSelector(selectIsInThread) &&
                 <button
                   onClick={() => setShowReplyForm(!showReplyForm)}
                   className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
                   Відповісти
                 </button>
+                }
                 {showReplyForm && (
                   <form
                     className="absolute top-[22px]  bg-black-pearl flex flex-col z-30 p-2 border-orange border rounded shadow-lg"

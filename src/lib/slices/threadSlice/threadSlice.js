@@ -22,8 +22,11 @@ export const threadSlice = createSlice({
 				state.hiddenThreads.push(threadId);
 			}
 		},
+		changeIsNotInThread(state) {
+			state.isInThread = false;
+		},
 		changeIsInThread(state) {
-			state.isInThread = !state.isInThread;
+			state.isInThread = true;
 		},
 	},
 });
@@ -33,6 +36,7 @@ export const {
 	resetThreadId,
 	hideThread,
 	changeIsInThread,
+	changeIsNotInThread,
 } = threadSlice.actions;
 
 export const selectThreadId = state => state.thread.id;
