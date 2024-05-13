@@ -1,6 +1,7 @@
 package org.studench.backend.data;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "comments")
+@Data
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

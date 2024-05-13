@@ -1,5 +1,7 @@
 package org.studench.backend.utils;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
@@ -42,5 +44,9 @@ public class ImageUtil {
         outputStream.close();
 
         return outputStream.toByteArray();
+    }
+
+    public static byte[] uploadImage(MultipartFile imageFile) throws IOException {
+        return imageFile.getBytes();
     }
 }

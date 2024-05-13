@@ -26,6 +26,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 
+import static org.studench.backend.utils.ImageUtil.uploadImage;
+
 @Service
 @RequiredArgsConstructor
 public class ThreadService {
@@ -122,16 +124,10 @@ public class ThreadService {
 
 
 
-    public byte[] downloadImage(Long threadId) throws DataFormatException, IOException {
-        Thread thread = threadRepo.findById(threadId).orElseThrow(() -> new IllegalArgumentException("Thread with id " + threadId + " not found"));
-        return ImageUtil.decompressImage(thread.getImageData());
-    }
 
 
 
-    public byte[] uploadImage(MultipartFile imageFile) throws IOException {
-        return imageFile.getBytes();
-    }
+
 
 
     public boolean likeThread(Long threadId) {

@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import AddToFav from '@/components/button/AddToFav'
+import axios from 'axios'
 
 const ThreadGlobal = ({
                         text,
@@ -37,12 +38,28 @@ const ThreadGlobal = ({
     })
   }
 
-  const handleReply = e => {
-    e.preventDefault()
-    setReply({ text: '', image: null })
-    setShowReplyForm(false)
-  }
 
+  const handleReply = e => {
+    const {image, text} = reply
+        const formData = new FormData()
+    formData.append('text', reply.text)
+    if (image) { // Check if image is selected before appending
+      formData.append('image', image);
+    }
+    e.preventDefault()
+    axios.post(`http://localhost:8080/comment/${id}/create`, formData, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        'Content-Type': 'multipart/form-data',
+      }
+    }).then(response => {
+      if (!response.status === 200) {
+        alert('Помилка при додаванні коментаря')
+      } else {
+        alert('Коментар успішно додано')
+      }
+    })
+  }
   const dispatch = useDispatch()
 
   const handleThreadClick = () => {
