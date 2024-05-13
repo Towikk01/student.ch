@@ -3,15 +3,22 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const ThreadReply = ({
-                       nickname = 'Анонім',
-                       date = '14.88.2024',
-                       id = '№0',
-                       replyUrl = '/0',
-                       text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.`
+                       username,
+                       date,
+                       id,
+                        imageData,
+                       text
                      }) => {
   return (
     <article
       className="w-fit max-w-[500px] border-peach border h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
+      {imageData &&
+        <div className="w-max h-max">
+          <img src={`data:image/png;base64,${imageData}`} alt="Post image"
+               className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square" />
+        </div>
+
+      }
       {/*Text block */}
       <div className="w-fit flex flex-col">
         <div className="post-actions flex flex-row justify-between gap-1.5 items-center">
@@ -26,7 +33,7 @@ const ThreadReply = ({
             </button>
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
-            <p className="text-[10px] text-primary">{nickname}</p>
+            <p className="text-[10px] text-primary">{username}</p>
             <p className="text-[10px] text-primary">{date}</p>
             <span className="text-[10px] text-primary">{id}</span>
           </div>

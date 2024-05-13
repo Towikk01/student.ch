@@ -12,6 +12,7 @@ const ThreadPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const [comments, setComments] = useState([])
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -49,8 +50,21 @@ const ThreadPage = () => {
   }, [threadId, dispatch]);
 
 
+  useEffect(() => {
+    fetch(`http://localhost:8080/comment/${threadId}/all`, {
+      method: 'GET',
+      headers: {
+        Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : ''
+      }
+    }).then(response => response.json())
+      .then(data => {
+        setComments(data)
+        console.log('Дані успішно завантажені: ', data)
+      }).catch(error => {
+      console.error('Error fetching data:', error)
+    })
 
-
+  } , [threadId])
 
   return (
     <CustomSection direction="col" center="items-start">
@@ -66,7 +80,15 @@ const ThreadPage = () => {
             imageData={thread.imageData}
           />
         )}
-        {/* Render ThreadReply components */}
+        {comments.length > 0 && comments.map((element, index) => (
+        <ThreadReply
+          username={element.author?.username}
+          date={element.date}
+          text={element.text}
+          imageData={element.imageData}
+          key={index}
+        />
+      ))}
       </div>
     </CustomSection>
   );

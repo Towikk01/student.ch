@@ -14,6 +14,7 @@ import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import AddToFav from '@/components/button/AddToFav'
 import axios from 'axios'
 
+
 const ThreadGlobal = ({
                         text,
                         title,

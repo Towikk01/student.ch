@@ -7,6 +7,8 @@ import org.studench.backend.data.Comment;
 import org.studench.backend.dto.CommentDto;
 import org.studench.backend.services.CommentService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comment")
@@ -20,6 +22,15 @@ public class CommentController {
 
         } catch (Exception e) {
             throw new RuntimeException("Error while creating comment", e);
+        }
+    }
+
+    @GetMapping("{threadId}/all")
+    public List<Comment> getCommentsByThread(@PathVariable Long threadId) {
+        try {
+            return commentService.getCommentsByThread(threadId);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while getting comments by thread", e);
         }
     }
 }
