@@ -31,6 +31,7 @@ const ThreadGlobal = ({
     image: null
   })
 
+  const fakeReplies = ['11', '12', '13', '1488', '1337']
 
 
   const handleInputChange = e => {
@@ -42,17 +43,17 @@ const ThreadGlobal = ({
   }
 
   const handleReply = e => {
-    const {image, text} = reply
-        const formData = new FormData()
+    const { image, text } = reply
+    const formData = new FormData()
     formData.append('text', reply.text)
     if (image) { // Check if image is selected before appending
-      formData.append('image', image);
+      formData.append('image', image)
     }
     e.preventDefault()
     axios.post(`http://localhost:8080/comment/${id}/create`, formData, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data'
       }
     }).then(response => {
       if (!response.status === 200) {
@@ -79,12 +80,12 @@ const ThreadGlobal = ({
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-    },
-    }).then(response => {
-      if (!response.ok) {
-        console.log('Помилка при сховуванні')
       }
-    }
+    }).then(response => {
+        if (!response.ok) {
+          console.log('Помилка при сховуванні')
+        }
+      }
     )
     dispatch(hideThread(id))
   }
@@ -93,11 +94,9 @@ const ThreadGlobal = ({
   return (
     <article
       className="w-full md:w-fit relative items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
-
       {loggedIn &&
         <AddToFav threadId={id} />
       }
-
       {imageData &&
         <div className="w-max h-max">
           <img src={`data:image/png;base64,${imageData}`} alt="Post image"
@@ -105,18 +104,17 @@ const ThreadGlobal = ({
         </div>
 
       }
-
       <div className="w-fit flex flex-col gap-2">
         <div className="post-actions flex flex-col sm:flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">
             {loggedIn &&
               <div className="relative flex">
                 {useSelector(selectIsInThread) &&
-                <button
-                  onClick={() => setShowReplyForm(!showReplyForm)}
-                  className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
-                  Відповісти
-                </button>
+                  <button
+                    onClick={() => setShowReplyForm(!showReplyForm)}
+                    className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+                    Відповісти
+                  </button>
                 }
                 {showReplyForm && (
                   <form
@@ -134,23 +132,23 @@ const ThreadGlobal = ({
               </div>
             }
             {loggedIn &&
-            <button
-              onClick={handleHideThread.bind(null, id)}
-              className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
-              Сховати
-            </button>
+              <button
+                onClick={handleHideThread.bind(null, id)}
+                className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+                Сховати
+              </button>
             }
-            { !useSelector(selectIsInThread) && (
-            <Link href={`/${id}`} onClick={handleThreadClick}
-                  className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
-              У тред
-            </Link>
+            {!useSelector(selectIsInThread) && (
+              <Link href={`/${id}`} onClick={handleThreadClick}
+                    className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+                У тред
+              </Link>
             )}
-            { useSelector(selectIsInThread) && (
-            <Link href="/" onClick={handleBackClick}
-                  className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
-              Назад
-            </Link>
+            {useSelector(selectIsInThread) && (
+              <Link href="/" onClick={handleBackClick}
+                    className=" whitespace-pre text-[10px] text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+                Назад
+              </Link>
             )}
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
@@ -166,6 +164,11 @@ const ThreadGlobal = ({
           <p className="text-[14px] text-ellipsis text-primary">
             {text}
           </p>
+        </div>
+        <div className="flex gap-1 items-center justify-start">
+          {fakeReplies.map((reply, index) => (
+            <p className="text-[10px] text-primary">123</p>
+          ))}
         </div>
       </div>
     </article>

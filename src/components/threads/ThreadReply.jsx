@@ -3,17 +3,18 @@ import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 
 
-
 const ThreadReply = ({
                        username,
                        date,
                        id,
-                        imageData,
+                       imageData,
                        text
                      }) => {
 
 
   const loggedIn = useSelector(isLoggedIn)
+  const fakeReplies = ['11', '12', '13', '1488', '1337']
+
   return (
     <article
       className="w-fit max-w-[500px] border-peach border h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
@@ -29,16 +30,16 @@ const ThreadReply = ({
         <div className="post-actions flex flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">
             {loggedIn &&
-            <button
-              className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
-              Відповісти
-            </button>}
+              <button
+                className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+                Відповісти
+              </button>}
             {loggedIn &&
-            <button
-              className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
-              Сховати
-            </button>
-          }
+              <button
+                className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
+                Сховати
+              </button>
+            }
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
             <p className="text-[10px] text-primary">{username}</p>
@@ -50,6 +51,11 @@ const ThreadReply = ({
           <p className="text-[14px] text-ellipsis text-primary">
             {text}
           </p>
+        </div>
+        <div className="flex gap-1 items-center justify-start">
+          {fakeReplies.map((reply, index) => (
+            <p className="text-[10px] text-primary">123</p>
+          ))}
         </div>
       </div>
     </article>
