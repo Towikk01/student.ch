@@ -2,10 +2,12 @@
 import CustomSection from '@/components/custom-section/CustomSection';
 import ThreadGlobal from '@/components/threads/ThreadGlobal';
 import React, {useEffect, useState} from 'react';
+import {changeIsInThread, changeIsNotInThread} from '@/lib/slices/threadSlice/threadSlice';
+import {useDispatch} from 'react-redux';
 
 export default function Home() {
 	const [fetchedData, setFetchedData] = useState();
-
+	const dispatch = useDispatch();
 	useEffect(() => {
 		const fetchData = async () => {
 			await fetch('http://localhost:8080/thread/latest', {
@@ -24,6 +26,10 @@ export default function Home() {
 		};
 
 		fetchData();
+	}, []);
+
+	useEffect(() => {
+		dispatch(changeIsNotInThread());
 	}, []);
 
 	const latestThreads = fetchedData || [];

@@ -31,6 +31,8 @@ const ThreadGlobal = ({
     image: null
   })
 
+
+
   const handleInputChange = e => {
     const { name, value, files, type } = e.target
     setReply({
@@ -38,7 +40,6 @@ const ThreadGlobal = ({
       [name]: type === 'file' ? files[0] : value
     })
   }
-
 
   const handleReply = e => {
     const {image, text} = reply
@@ -66,12 +67,10 @@ const ThreadGlobal = ({
   const handleThreadClick = () => {
     dispatch(resetThreadId())
     dispatch(saveThreadId(id))
-      dispatch(changeIsInThread())
   }
   const handleBackClick = () => {
 
     dispatch(resetThreadId())
-    dispatch(changeIsNotInThread())
   }
 
   const handleHideThread = (id) => {
@@ -90,7 +89,7 @@ const ThreadGlobal = ({
     dispatch(hideThread(id))
   }
 
-console.log("isInThread", useSelector(selectIsInThread))
+
   return (
     <article
       className="w-full md:w-fit relative items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">

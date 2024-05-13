@@ -1,6 +1,8 @@
 import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useSelector } from 'react-redux'
+import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
+
+
 
 const ThreadReply = ({
                        username,
@@ -9,6 +11,9 @@ const ThreadReply = ({
                         imageData,
                        text
                      }) => {
+
+
+  const loggedIn = useSelector(isLoggedIn)
   return (
     <article
       className="w-fit max-w-[500px] border-peach border h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
@@ -23,14 +28,17 @@ const ThreadReply = ({
       <div className="w-fit flex flex-col">
         <div className="post-actions flex flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">
+            {loggedIn &&
             <button
               className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               Відповісти
-            </button>
+            </button>}
+            {loggedIn &&
             <button
               className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
               Сховати
             </button>
+          }
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
             <p className="text-[10px] text-primary">{username}</p>

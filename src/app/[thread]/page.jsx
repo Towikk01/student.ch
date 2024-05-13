@@ -4,7 +4,7 @@ import CustomSection from '@/components/custom-section/CustomSection';
 import ThreadGlobal from '@/components/threads/ThreadGlobal';
 import ThreadReply from '@/components/threads/ThreadReply';
 import { useDispatch, useSelector } from 'react-redux'
-import { selectThreadId} from '@/lib/slices/threadSlice/threadSlice';
+import { changeIsInThread, changeIsNotInThread, selectThreadId } from '@/lib/slices/threadSlice/threadSlice'
 
 const ThreadPage = () => {
   const threadId = useSelector(selectThreadId); // Get thread ID from Redux store
@@ -13,6 +13,7 @@ const ThreadPage = () => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const [comments, setComments] = useState([])
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -48,6 +49,11 @@ const ThreadPage = () => {
   useEffect(() => {
     localStorage.setItem('threadId', threadId);
   }, [threadId, dispatch]);
+
+
+  useEffect(() => {
+    dispatch(changeIsInThread());
+  }, [])
 
 
   useEffect(() => {
