@@ -47,7 +47,7 @@ public class SecurityConfig {
                 }))
                 // Adjust the access permissions
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token", "/thread/all/*", "/thread/*", "/thread/latest", "/comment/*/all").permitAll()
+                        .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token", "/thread/all/*", "/thread/latest", "/comment/*/all").permitAll()
                         .requestMatchers(new ModeratorMatcher()).authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

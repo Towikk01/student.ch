@@ -3,26 +3,24 @@ export const TableBase = ({ type, data }) => {
   const threadsHeader = ['ID', 'Author',  'Date', 'Actions'];
   const usersHeader = ['ID', 'Username', 'First Name', 'Last Name', 'Registration Date', 'Actions'];
 
-  const commentsData = data.map(item => ({
+  const commentsData = data ? data.map(item => ({
     id: item.id,
     author: item.author?.username,
     text: item.text,
     date: item.date.substring(0, 10),
     actions: ['Show', 'Ban', 'Delete']
-  }));
+  })) : [];
 
-  console.log('commentsData', commentsData)
 
-  const threadsData = data.map(data => ({
+  const threadsData = data ? data.map(data => ({
       id: data.id,
       author: data.author?.username,
 
       date: data.date.substring(0, 10),
       actions: ['Show', 'Ban', 'Delete']
     })
-  );
+  ) : [];
 
-  console.log('threadsData', threadsData)
 
   const dataToShow = type === 'comments' ? commentsData : threadsData;
   const headerData = type === 'comments' ? commentsHeader : threadsHeader;
