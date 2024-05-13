@@ -33,4 +33,13 @@ public class CommentController {
             throw new RuntimeException("Error while getting comments by thread", e);
         }
     }
+
+    @GetMapping("/all_comments")
+    public List<Comment> getAllComments() {
+        try {
+            return commentService.getAllComments();
+        } catch (Exception e) {
+            throw new RuntimeException("Error while getting all comments", e);
+        }
+    }
 }

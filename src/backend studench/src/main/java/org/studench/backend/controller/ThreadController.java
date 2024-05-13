@@ -122,6 +122,16 @@ public class ThreadController {
         }
     }
 
+    @GetMapping("/all_threads")
+    public ResponseEntity<List<Thread>> getAllThreads() {
+        try {
+            return ResponseEntity.ok().body(threadService.getAllThreads());
+        } catch (Exception e) {
+            log.error("Error while getting all threads", e);
+            throw new RuntimeException("Error while getting all threads", e);
+        }
+    }
+
 
 
 

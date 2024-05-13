@@ -34,4 +34,9 @@ public class PersonalAccountService {
         userRepo.save(user);
 
     }
+
+    public String getRole() {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getRole().getName();
+    }
 }

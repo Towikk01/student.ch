@@ -123,13 +123,6 @@ public class ThreadService {
     }
 
 
-
-
-
-
-
-
-
     public boolean likeThread(Long threadId) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Thread thread = threadRepo.findById(threadId).orElseThrow(() -> new IllegalArgumentException("Thread with id " + threadId + " not found"));
@@ -170,6 +163,20 @@ public class ThreadService {
         hideThread.setThread(thread);
         hideThreadRepo.save(hideThread);
         return hideThreadRepo.findByUserIdAndThreadId(currentUser.getId(), threadId).isPresent();
+    }
+
+    public List<Thread> getAllThreads() {
+        List<Thread> threads = threadRepo.findAll();
+        for (Thread thread : threads) {
+            if (thread.getImageData() != null) {
+                try {
+                    thread.setImageData(ImageUtil.decompressImage(thread.getImageData()));
+                } catch (DataFormatException | IOException e) {
+                    log.error("Error while decompressing image", e);
+                }
+            }
+        }
+        return threads;
     }
 
 

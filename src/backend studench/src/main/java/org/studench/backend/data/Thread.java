@@ -26,6 +26,7 @@ public class Thread {
     private String title;
     private String text;
     @OneToMany
+    @JsonIgnore
     private List<Comment> comments;
     @ManyToOne
     private ThreadTheme theme;

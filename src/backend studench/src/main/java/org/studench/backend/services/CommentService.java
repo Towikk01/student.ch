@@ -58,4 +58,18 @@ public class CommentService {
         return comments;
     }
 
+    public List<Comment> getAllComments() {
+        List<Comment> comments = commentRepo.findAll();
+        for (Comment comment : comments) {
+            if (comment.getImageData() != null) {
+                try {
+                    comment.setImageData(ImageUtil.decompressImage(comment.getImageData()));
+                } catch (DataFormatException | IOException e) {
+                    log.error("Error while decompressing image", e);
+                }
+            }
+        }
+        return comments;
+    }
+
 }

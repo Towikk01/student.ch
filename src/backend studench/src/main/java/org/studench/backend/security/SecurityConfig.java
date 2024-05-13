@@ -12,11 +12,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.studench.backend.data.Role;
+import org.studench.backend.data.User;
+import org.studench.backend.matchers.ModeratorMatcher;
 import org.studench.backend.services.UserService;
 
 import java.util.List;
@@ -44,7 +48,7 @@ public class SecurityConfig {
                 // Adjust the access permissions
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token", "/thread/all/*", "/thread/*", "/thread/latest", "/comment/*/all").permitAll()
-                        .requestMatchers( "/admin/**").hasRole("ADMIN")
+                        .requestMatchers(new ModeratorMatcher()).authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
@@ -52,6 +56,18 @@ public class SecurityConfig {
         return http.build();
     }
 
+//    create method to check if user is admin
+    public boolean isAdmin() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Role role = user.getRole();
+        return role.getName().equals("ADMIN");
+    }
+
+    public boolean isModerator() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Role role = user.getRole();
+        return role.getName().equals("MODERATOR");
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

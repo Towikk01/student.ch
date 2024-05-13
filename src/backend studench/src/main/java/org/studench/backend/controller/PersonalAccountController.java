@@ -46,4 +46,10 @@ public class PersonalAccountController {
 
     }
 
+    @GetMapping("/role")
+    public ResponseEntity<String> getRole() {
+        String role = personalAccountService.getRole();
+        return ResponseEntity.ok().body("{\"role\":\"" + role + "\"}");
+    }
+
 }
