@@ -74,6 +74,9 @@ const CreateThreadButton = ({ category }) => {
       }
     })
       .then((response) => {
+        if (response.status === 200) {
+
+        alert('Тред успішно створено');
         // Handle success
         console.log(response.data);
         console.log(response.statusText);
@@ -84,6 +87,9 @@ const CreateThreadButton = ({ category }) => {
           image: null,
 
         });
+      } else {
+        alert('Помилка при створенні треду');
+      }
       })
       .catch((error) => {
         // Handle error

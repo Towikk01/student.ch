@@ -32,7 +32,7 @@ public class ThreadController {
 
     }
 
-    @GetMapping("all/{themeId}")
+    @GetMapping("/all/{themeId}")
     public ResponseEntity<List<Thread>> getThreadsByTheme(@PathVariable Long themeId) {
         try {
             return ResponseEntity.ok().body(threadService.getThreadsByTheme(themeId));
@@ -42,7 +42,7 @@ public class ThreadController {
         }
     }
 
-    @GetMapping("/{threadId}")
+    @GetMapping("/show/{threadId}")
     public ResponseEntity<Thread> getThread(@PathVariable Long threadId) {
         try {
             return ResponseEntity.ok().body(threadService.getThread(threadId));
@@ -122,13 +122,24 @@ public class ThreadController {
         }
     }
 
-    @GetMapping("/all_threads")
+    @GetMapping("/moderator/all_threads")
     public ResponseEntity<List<Thread>> getAllThreads() {
         try {
             return ResponseEntity.ok().body(threadService.getAllThreads());
         } catch (Exception e) {
             log.error("Error while getting all threads", e);
             throw new RuntimeException("Error while getting all threads", e);
+        }
+    }
+
+    @DeleteMapping("/moderator/{threadId}/delete")
+    public ResponseEntity<String> deleteThread(@PathVariable Long threadId) {
+        try {
+            threadService.deleteThread(threadId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("Error while deleting thread", e);
+            throw new RuntimeException("Error while deleting thread", e);
         }
     }
 

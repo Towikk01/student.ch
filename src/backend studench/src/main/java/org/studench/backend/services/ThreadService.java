@@ -179,5 +179,9 @@ public class ThreadService {
         return threads;
     }
 
+    public void deleteThread(Long threadId) {
+        threadRepo.deleteById(threadId);
+    }
+
 
 }

@@ -47,7 +47,7 @@ public class SecurityConfig {
                 }))
                 // Adjust the access permissions
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token", "/thread/all/*", "/thread/latest", "/comment/*/all").permitAll()
+                        .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token", "/thread/all/*", "/thread/show/*", "/thread/latest", "/comment/*/all").permitAll()
                         .requestMatchers(new ModeratorMatcher()).authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -56,18 +56,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    create method to check if user is admin
-    public boolean isAdmin() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Role role = user.getRole();
-        return role.getName().equals("ADMIN");
-    }
 
-    public boolean isModerator() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Role role = user.getRole();
-        return role.getName().equals("MODERATOR");
-    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

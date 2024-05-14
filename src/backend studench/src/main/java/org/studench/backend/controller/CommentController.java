@@ -1,6 +1,7 @@
 package org.studench.backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.studench.backend.data.Comment;
@@ -34,7 +35,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/all_comments")
+    @GetMapping("moderator/all_comments")
     public List<Comment> getAllComments() {
         try {
             return commentService.getAllComments();
@@ -42,4 +43,16 @@ public class CommentController {
             throw new RuntimeException("Error while getting all comments", e);
         }
     }
+
+    @DeleteMapping("moderator/{commentId}/delete")
+public ResponseEntity<String> deleteComment(@PathVariable Long commentId) {
+        try {
+            commentService.deleteComment(commentId);
+            return ResponseEntity.noContent().build();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error while deleting comment", e);
+        }
+    }
+
 }

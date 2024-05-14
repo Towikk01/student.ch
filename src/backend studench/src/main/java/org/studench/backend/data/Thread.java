@@ -3,11 +3,11 @@ package org.studench.backend.data;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 
 import java.sql.Types;
@@ -25,7 +25,7 @@ public class Thread {
     private Long id;
     private String title;
     private String text;
-    @OneToMany
+    @OneToMany(mappedBy = "thread", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Comment> comments;
     @ManyToOne

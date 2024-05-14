@@ -52,11 +52,11 @@ const ThreadReply = ({
             {text}
           </p>
         </div>
-        <div className="flex gap-1 items-center justify-start">
-          {fakeReplies.map((reply, index) => (
-            <p className="text-[10px] text-primary">123</p>
-          ))}
-        </div>
+        {/*<div className="flex gap-1 items-center justify-start">*/}
+        {/*  {fakeReplies.map((reply, index) => (*/}
+        {/*    <p className="text-[10px] text-primary">123</p>*/}
+        {/*  ))}*/}
+        {/*</div>*/}
       </div>
     </article>
   )

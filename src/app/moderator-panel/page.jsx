@@ -4,23 +4,26 @@ import CustomSection from '@/components/custom-section/CustomSection'
 import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import { TableBase } from '@/components/tables/TableBase'
+import { router } from 'next/client'
+import { useRouter } from 'next/navigation'
 
 
 const AdminPanel = () => {
   const loggedIn = useSelector(isLoggedIn)
   const [comments, setComments] = useState([])
   const [threads, setThreads] = useState([])
+  const router = useRouter()
 
   useEffect(() => {
-    fetch('http://localhost:8080/comment/all_comments', {
+    fetch('http://localhost:8080/comment/moderator/all_comments', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : '',
       },
     }).then(response => {
-      if (!response.ok) {
-        console.log('Помилка при завантаженні коментарів')
+      if (response.status !== 200) {
+       console.log('Помилка при видаленні коментаря' + response.statusText)
       } else {
         return response.json()
       }
@@ -35,15 +38,15 @@ const AdminPanel = () => {
   , [])
 
   useEffect(() => {
-      fetch('http://localhost:8080/thread/all_threads', {
+      fetch('http://localhost:8080/thread/moderator/all_threads', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : '',
         },
       }).then(response => {
-        if (!response.ok) {
-          console.log('Помилка при завантаженні коментарів')
+        if (response.status !== 200) {
+          console.log('Помилка при видаленні коментаря' + response.statusText)
         } else {
           return response.json()
         }

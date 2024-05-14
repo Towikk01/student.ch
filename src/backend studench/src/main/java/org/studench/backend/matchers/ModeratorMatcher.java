@@ -11,7 +11,7 @@ public class ModeratorMatcher implements RequestMatcher {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Role role = user.getRole();
         String path = request.getRequestURI();
-        return role.getName().equals("ADMIN") && (path.equals("/comment/all_comments") || path.equals("/thread/all_threads"));
+        return role.getName().equals("MODERATOR") && (path.equals("/comment/moderator/all_comments") || path.equals("/thread/moderator/all_threads") || path.equals("/comment/moderator/*/delete") || path.equals("/thread/moderator/*/delete"));
 
     }
 }

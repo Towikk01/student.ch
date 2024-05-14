@@ -20,7 +20,7 @@ const ThreadPage = () => {
       setError(null);
 
       try {
-        const response = await fetch(`http://localhost:8080/thread/${threadId}`, {
+        const response = await fetch(`http://localhost:8080/thread/show/${threadId}`, {
           method: 'GET'
         });
 
