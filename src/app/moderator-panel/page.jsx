@@ -14,6 +14,36 @@ const AdminPanel = () => {
   const [threads, setThreads] = useState([])
   const router = useRouter()
 
+
+  if (!loggedIn) {
+    router.push('/')
+  }
+
+  useEffect(() => {
+    fetch('http://localhost:8080/me/role', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : '',
+      },
+    }).then(response => {
+      if (response.status !== 200) {
+        console.log('Помилка при видаленні коментаря' + response.statusText)
+      } else {
+        return response.json()
+      }
+    }
+    ).then(data => {
+      if (data.role !== 'MODERATOR') {
+        router.push('/')
+      }
+    }
+    ).catch(error => {
+      console.error('Error fetching data:', error)
+    }
+    )
+  }, [])
+
   useEffect(() => {
     fetch('http://localhost:8080/comment/moderator/all_comments', {
       method: 'GET',
