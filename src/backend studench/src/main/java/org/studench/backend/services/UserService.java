@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.studench.backend.data.User;
 import org.studench.backend.repo.UserRepo;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -70,6 +72,11 @@ public class UserService {
 
         boolean existsByUsername(String username) {
             return repository.existsByUsername(username);
+        }
+
+        public List<User> getAllUsers() {
+            List <User> users = repository.findAllUsersAndModerators();
+            return users;
         }
     }
 

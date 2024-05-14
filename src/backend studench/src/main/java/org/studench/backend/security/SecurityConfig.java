@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.studench.backend.data.Role;
 import org.studench.backend.data.User;
-import org.studench.backend.matchers.ModeratorMatcher;
 import org.studench.backend.services.UserService;
 
 import java.util.List;
@@ -48,7 +47,8 @@ public class SecurityConfig {
                 // Adjust the access permissions
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token", "/thread/all/*", "/thread/show/*", "/thread/latest", "/comment/*/all").permitAll()
-                        .requestMatchers(new ModeratorMatcher()).authenticated()
+                        .requestMatchers("/comment/moderator/all_comments", "/thread/moderator/all_threads", "/comment/moderator/*/delete", "/thread/moderator/*/delete").hasRole("MODERATOR")
+                        .requestMatchers("/users/admin/all_users").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

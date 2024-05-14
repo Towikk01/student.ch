@@ -25,7 +25,7 @@ public class Thread {
     private Long id;
     private String title;
     private String text;
-    @OneToMany(mappedBy = "thread", cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Comment> comments;
     @ManyToOne

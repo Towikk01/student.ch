@@ -40,9 +40,11 @@ public class User implements UserDetails {
     @ManyToOne
     private Role role;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        String roleNameWithPrefix = "ROLE_" + role.getName();
+        return List.of(new SimpleGrantedAuthority(roleNameWithPrefix));
     }
 
     @Override
