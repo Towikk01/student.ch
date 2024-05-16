@@ -28,7 +28,7 @@ const AdminPanel = () => {
       },
     }).then(response => {
       if (response.status !== 200) {
-        console.log('Помилка при видаленні коментаря' + response.statusText)
+        console.log('Щось пішло не так' + response.statusText)
       } else {
         return response.json()
       }
@@ -53,7 +53,7 @@ const AdminPanel = () => {
       },
     }).then(response => {
       if (response.status !== 200) {
-       console.log('Помилка при видаленні коментаря' + response.statusText)
+        console.log('Щось пішло не так' + response.statusText)
       } else {
         return response.json()
       }
@@ -76,7 +76,7 @@ const AdminPanel = () => {
         },
       }).then(response => {
         if (response.status !== 200) {
-          console.log('Помилка при видаленні коментаря' + response.statusText)
+          console.log('Щось пішло не так' + response.statusText)
         } else {
           return response.json()
         }

@@ -6,4 +6,5 @@ import org.studench.backend.data.Role;
 
 @Repository
 public interface RolesRepo extends JpaRepository<Role, Integer> {
+Role findByName(String name);
 }

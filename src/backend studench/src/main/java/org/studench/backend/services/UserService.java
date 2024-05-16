@@ -5,7 +5,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.studench.backend.data.Role;
 import org.studench.backend.data.User;
+import org.studench.backend.repo.RolesRepo;
 import org.studench.backend.repo.UserRepo;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 public class UserService {
 
         private final UserRepo repository;
+        private final RolesRepo rolesRepo;
 
         /**
          *  User save
@@ -77,6 +80,30 @@ public class UserService {
         public List<User> getAllUsers() {
             List <User> users = repository.findAllUsersAndModerators();
             return users;
+        }
+
+        public void banUser(Long id) {
+            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            user.setEnabled(false);
+            repository.save(user);
+        }
+
+        public void unbanUser(Long id) {
+            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            user.setEnabled(true);
+            repository.save(user);
+        }
+
+        public void setModerator(Long id) {
+            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            user.setRole(rolesRepo.findByName("MODERATOR"));
+            repository.save(user);
+        }
+
+        public void setUser(Long id) {
+            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            user.setRole(rolesRepo.findByName("USER"));
+            repository.save(user);
         }
     }
 

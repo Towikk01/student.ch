@@ -31,6 +31,7 @@ public class User implements UserDetails {
     @Column(name = "password" , nullable = false)
     private String password;
 
+
     @Column(name = "registered_at")
     private LocalDateTime registered_at;
 
@@ -62,10 +63,9 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @Column(name = "is_enabled")
+    private boolean isEnabled = true;
+
 
     public User() {
         this.registered_at = LocalDateTime.now();

@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("auth/sign-up", "auth/login", "/auth/refresh-token", "/thread/all/*", "/thread/show/*", "/thread/latest", "/comment/*/all").permitAll()
                         .requestMatchers("/comment/moderator/all_comments", "/thread/moderator/all_threads", "/comment/moderator/*/delete", "/thread/moderator/*/delete").hasRole("MODERATOR")
-                        .requestMatchers("/users/admin/all_users").hasRole("ADMIN")
+                        .requestMatchers("/users/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
