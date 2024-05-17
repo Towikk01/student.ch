@@ -6,6 +6,7 @@ import Comment from '@/components/threads/Comment';
 import Reply from '@/components/threads/Reply';
 import { useDispatch, useSelector } from 'react-redux'
 import { changeIsInThread, changeIsNotInThread, selectThreadId } from '@/lib/slices/threadSlice/threadSlice'
+import {selectComments, selectLatestComment} from '@/lib/slices/commentSlice/commentSlice'
 
 const ThreadPage = () => {
   const threadId = useSelector(selectThreadId); // Get thread ID from Redux store
@@ -15,6 +16,8 @@ const ThreadPage = () => {
   const dispatch = useDispatch();
   const [comments, setComments] = useState([])
   const [commentReply, setCommentReply] = useState([])
+  const newComment = useSelector(selectLatestComment)
+  const allComments = useSelector(selectComments)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +48,7 @@ const ThreadPage = () => {
       // Fetch data only if threadId exists
       fetchData();
     }
-  }, []); // Fetch data whenever threadId changes
+  }, []);
 
 
   useEffect(() => {
@@ -67,26 +70,15 @@ const ThreadPage = () => {
     }).then(response => response.json())
       .then(data => {
         setComments(data)
+
         console.log('Дані успішно завантажені: ', data)
       }).catch(error => {
       console.error('Error fetching data:', error)
     })
 
-  } , )
+  } , [allComments.length, newComment])
 
-  useEffect(() => {
-    fetch(`http://localhost:8080/comment/reply/get`, {
-      method: 'GET',
-    }).then(response => response.json())
-      .then(data => {
-        console.log('commentReply', data)
-        setCommentReply(data)
-        console.log('Дані успішно завантажені: ', data)
-      }).catch(error => {
-      console.error('Error fetching data:', error)
-    })
-  }
-  , )
+
 
 
 console.log ("commentReply", commentReply)
@@ -104,34 +96,17 @@ console.log ("commentReply", commentReply)
             imageData={thread.imageData}
           />
         )}
-{/*        {comments.length > 0 && comments.map((element, index) => (*/}
-{/*        <Comment*/}
-{/*          username={element.author?.username}*/}
-{/*          date={element.date}*/}
-{/*          text={element.text}*/}
-{/*          imageData={element.imageData}*/}
-{/*          key={index}*/}
-{/*          id = {element.id}*/}
-{/*        />*/}
+        {comments.length > 0 && comments.map((element, index) => (
+        <Comment
+          username={element.author?.username}
+          date={element.date}
+          text={element.text}
+          imageData={element.imageData}
+          key={index}
+          id = {element.id}
+        />
 
-{/*))}*/}
-        {/*{commentReply.length > 0  && commentReply.map((element, index) => (*/}
-        {/*  console.log("element", element.comment.thread.id),*/}
-        {/*  element.comment.thread.id === threadId &&(*/}
-
-        {/*<Reply*/}
-        {/*  username={element.author?.username}*/}
-        {/*  date={element.date}*/}
-        {/*  text={element.text}*/}
-        {/*  imageData={element.imageData}*/}
-        {/*  key={index}*/}
-        {/*  commentId={element.comment.id}*/}
-
-        {/*/>*/}
-
-        {/*)))}*/}
-
-
+))}
 
 
 

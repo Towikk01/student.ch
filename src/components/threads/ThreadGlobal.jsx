@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import AddToFav from '@/components/button/AddToFav'
 import axios from 'axios'
+import { addComment } from '@/lib/slices/commentSlice/commentSlice'
 
 
 const ThreadGlobal = ({
@@ -57,9 +58,15 @@ const ThreadGlobal = ({
       }
     }).then(response => {
       if (!response.status === 200) {
-        alert('Помилка при додаванні коментаря')
+
       } else {
-        alert('Коментар успішно додано')
+        dispatch(addComment(response.data))
+        setReply({
+          text: '',
+          image: null
+        })
+        setShowReplyForm(false)
+
       }
     })
   }

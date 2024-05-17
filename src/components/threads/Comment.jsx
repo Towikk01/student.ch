@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
+import Reply from '@/components/threads/Reply'
 
 
 const Comment = ({
@@ -15,7 +16,20 @@ const Comment = ({
   const loggedIn = useSelector(isLoggedIn)
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [commentReply, setCommentReply] = useState('')
+  const [fetchedCommentReply, setFetchedCommentReply] = useState([])
 
+  useEffect(() => {
+      fetch(`http://localhost:8080/comment/reply/get/${id}  `, {
+        method: 'GET',
+      }).then(response => response.json())
+        .then(data => {
+          setFetchedCommentReply(data)
+          console.log('Дані успішно завантажені: ', data)
+        }).catch(error => {
+        console.error('Error fetching data:', error)
+      })
+    }
+    , [])
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -35,6 +49,7 @@ const Comment = ({
         if (!response.status === 200) {
           alert('Помилка при додаванні коментаря')
         } else {
+
           alert('Коментар успішно додано')
         }
       }
@@ -44,6 +59,7 @@ const Comment = ({
 
 
   return (
+    <div>
     <article
       className="w-fit max-w-[500px] border-peach border h-fit max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-row rounded-xl shadow-md">
       {imageData &&
@@ -76,11 +92,7 @@ const Comment = ({
             {text}
           </p>
         </div>
-        {/*<div className="flex gap-1 items-center justify-start">*/}
-        {/*  {fakeReplies.map((reply, index) => (*/}
-        {/*    <p className="text-[10px] text-primary">123</p>*/}
-        {/*  ))}*/}
-        {/*</div>*/}
+
         {showReplyForm && (
           <form
             className="bg-black-pearl flex flex-col z-30 p-2 border-orange border rounded shadow-lg"
@@ -95,6 +107,20 @@ const Comment = ({
         )}
       </div>
     </article>
+
+      {fetchedCommentReply.map((element, index) => (
+
+          <Reply
+            username={element.author?.username}
+            date={element.date}
+            text={element.text}
+            imageData={element.imageData}
+            key={index}
+            commentId={element.comment.id}
+
+          />
+        ))}
+    </div>
   )
 }
 
