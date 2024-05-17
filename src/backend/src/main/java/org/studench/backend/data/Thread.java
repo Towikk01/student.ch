@@ -25,7 +25,7 @@ public class Thread {
     private Long id;
     private String title;
     private String text;
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "thread")
     @JsonIgnore
     private List<Comment> comments;
     @ManyToOne
@@ -37,5 +37,6 @@ public class Thread {
 
     @Column (nullable = true)
     private byte[] imageData;
+
 
 }

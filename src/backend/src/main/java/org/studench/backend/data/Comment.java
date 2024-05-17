@@ -25,4 +25,5 @@ public class Comment {
     @JdbcTypeCode(Types.BINARY)
     @Column (nullable = true)
     private byte[] imageData;
+
 }

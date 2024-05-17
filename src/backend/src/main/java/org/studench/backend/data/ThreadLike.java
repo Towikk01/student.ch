@@ -17,7 +17,7 @@ public class ThreadLike {
     @ManyToOne
     @JsonIgnore
     private User user;
-    @OneToOne
+    @ManyToOne
     private Thread thread;
     private LocalDateTime likedAt;
 }
