@@ -25,7 +25,7 @@ const ThreadGlobal = ({
                         imageData
                       }) => {
 
-  const loggedIn = useSelector(isLoggedIn)
+
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [reply, setReply] = useState({
     text: '',
@@ -101,7 +101,7 @@ const ThreadGlobal = ({
   return (
     <article
       className="w-full md:w-fit relative items-center md:items-start max-w-max border-orange border-[1px] h-fit md:max-h-[250px] bg-black-pearl p-2  gap-3 flex flex-col md:flex-row rounded-xl shadow-md">
-      {loggedIn &&
+      {useSelector(isLoggedIn) &&
         <AddToFav threadId={id} />
       }
       {imageData &&
@@ -114,9 +114,9 @@ const ThreadGlobal = ({
       <div className="w-fit flex flex-col gap-2">
         <div className="post-actions flex flex-col sm:flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1.5 items-center ">
-            {loggedIn &&
+
               <div className="relative flex">
-                {useSelector(selectIsInThread) &&
+                {useSelector(isLoggedIn) &&
                   <button
                     onClick={() => setShowReplyForm(!showReplyForm)}
                     className="text-[10px] text-primary  text-white font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
@@ -137,8 +137,8 @@ const ThreadGlobal = ({
                   </form>
                 )}
               </div>
-            }
-            {loggedIn &&
+
+            {useSelector(isLoggedIn) &&
               <button
                 onClick={handleHideThread.bind(null, id)}
                 className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">

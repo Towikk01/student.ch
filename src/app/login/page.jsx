@@ -65,8 +65,6 @@ const LoginPage = () => {
         // Access tokens from the parsed JSON data
         const accessToken = data.access_token;
         const refreshToken = data.refresh_token;
-        localStorage.setItem('username', userData.username);
-        localStorage.setItem('password', userData.password);
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         setUserData({

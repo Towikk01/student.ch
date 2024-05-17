@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import Reply from '@/components/threads/Reply'
+import {
+  addCommentReply,
+  selectCommentReplies,
+  selectLatestCommentReply
+} from '@/lib/slices/commentReplySlice/commentReplySlice'
 
 
 const Comment = ({
@@ -17,6 +22,9 @@ const Comment = ({
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [commentReply, setCommentReply] = useState('')
   const [fetchedCommentReply, setFetchedCommentReply] = useState([])
+  const dispatch = useDispatch()
+  const newCommentReply = useSelector(selectLatestCommentReply)
+  const allCommentReply = useSelector(selectCommentReplies)
 
   useEffect(() => {
       fetch(`http://localhost:8080/comment/reply/get/${id}  `, {
@@ -29,7 +37,7 @@ const Comment = ({
         console.error('Error fetching data:', error)
       })
     }
-    , [])
+    , [allCommentReply.length, newCommentReply])
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -49,8 +57,9 @@ const Comment = ({
         if (!response.status === 200) {
           alert('Помилка при додаванні коментаря')
         } else {
-
-          alert('Коментар успішно додано')
+          dispatch(addCommentReply(response.data))
+          setCommentReply('')
+          setShowReplyForm(false)
         }
       }
     )

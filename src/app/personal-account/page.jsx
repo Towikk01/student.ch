@@ -61,12 +61,7 @@ const PersonalAccountPage = () => {
     setUsername(e.target.value)
   }
 
-  const handleOutsideClick = (e) => {
-    // If clicked outside the input field and edit mode is true, cancel edits
-    if (editMode && !e.target.closest('.edit-container')) {
-      setEditMode(false)
-    }
-  }
+
 
 
   useEffect(() => {

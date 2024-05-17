@@ -6,6 +6,7 @@ import {dormThreadsSlice} from '@/lib/slices/dorm-threads/dormThreadsSlice';
 import {studyThreadsSlice} from '@/lib/slices/study-threads/studyThreadsSlice';
 import {threadSlice} from '@/lib/slices/threadSlice/threadSlice';
 import {commentSlice} from '@/lib/slices/commentSlice/commentSlice';
+import {commentReplySlice} from '@/lib/slices/commentReplySlice/commentReplySlice';
 
 export const store = configureStore({
 	reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
 		studyThreads: studyThreadsSlice.reducer,
 		thread: threadSlice.reducer,
 		comment: commentSlice.reducer,
+		commentReply: commentReplySlice.reducer,
 	},
 });
