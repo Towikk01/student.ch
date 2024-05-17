@@ -75,18 +75,18 @@ const CreateThreadButton = ({ category }) => {
     })
       .then((response) => {
         if (response.status === 200) {
+          setIsOpen(false);
+          thread.title = '';
+          thread.text = '';
+          thread.image = null;
+        if (category === 'food') {
+          dispatch(addFoodThread(threadData));
+        } else if (category === 'dorm') {
+          dispatch(addDormThread(threadData));
+        } else if (category === 'study') {
+          dispatch(addStudyThread(threadData));
+        }
 
-        alert('Тред успішно створено');
-        // Handle success
-        console.log(response.data);
-        console.log(response.statusText);
-        setIsOpen(false);
-        setThread({
-          title: '',
-          text: '',
-          image: null,
-
-        });
       } else {
         alert('Помилка при створенні треду');
       }

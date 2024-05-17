@@ -38,5 +38,6 @@ export const {
 export const selectFoodThreads = state => state.foodThreads.foodThreads;
 export const selectIsLoading = state => state.foodThreads.isLoading;
 export const selectError = state => state.foodThreads.error;
+export const selectLatestFoodThread = state => state.foodThreads.foodThreads.slice(-1);
 
 export default foodThreadsSlice.reducer;

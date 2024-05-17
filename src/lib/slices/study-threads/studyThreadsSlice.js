@@ -39,5 +39,6 @@ export const {
 export const selectStudyThreads = state => state.studyThreads.studyThreads;
 export const selectIsLoading = state => state.studyThreads.isLoading;
 export const selectError = state => state.studyThreads.error;
+export const selectLatestStudyThread = state => state.studyThreads.studyThreads.slice(-1);
 
 export default studyThreadsSlice.reducer;

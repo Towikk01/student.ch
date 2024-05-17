@@ -39,5 +39,6 @@ export const {
 export const selectDormThreads = state => state.dormThreads.dormThreads;
 export const selectIsLoading = state => state.dormThreads.isLoading;
 export const selectError = state => state.dormThreads.error;
+export const selectLatestDormThread = state => state.dormThreads.dormThreads.slice(-1);
 
 export default dormThreadsSlice.reducer;

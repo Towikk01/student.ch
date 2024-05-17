@@ -6,7 +6,7 @@ import {changeIsInThread, changeIsNotInThread} from '@/lib/slices/threadSlice/th
 import {useDispatch} from 'react-redux';
 
 export default function Home() {
-	const [fetchedData, setFetchedData] = useState();
+	const [fetchedData, setFetchedData] = useState([]);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		const fetchData = async () => {
@@ -26,7 +26,7 @@ export default function Home() {
 		};
 
 		fetchData();
-	}, []);
+	}, [fetchedData.length]);
 
 	useEffect(() => {
 		dispatch(changeIsNotInThread());

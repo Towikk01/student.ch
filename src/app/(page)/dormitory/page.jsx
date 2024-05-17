@@ -2,25 +2,29 @@
 import React, { useEffect, useState } from 'react'
 import ThreadGlobal from '@/components/threads/ThreadGlobal'
 import { useSelector } from 'react-redux'
-import { selectDormThreads } from '@/lib/slices/dorm-threads/dormThreadsSlice'
+import { selectDormThreads, selectLatestDormThread } from '@/lib/slices/dorm-threads/dormThreadsSlice'
 
 
-const DormitoryPage = () => {
+const FoodPage = () => {
   const [fetchedData, setFetchedData] = useState()
-  const [isLoading, setIsLoading] = useState(false) // Track loading state
   const [error, setError] = useState(null) // Track potential errors
+  const newDormThread = useSelector(selectLatestDormThread)
+  const allDormThreads = useSelector(selectDormThreads)
+
+
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true) // Set loading state to true
       setError(null) // Clear any previous errors
+
 
       try {
         const response = await fetch('http://localhost:8080/thread/all/2', {
           method: 'GET',
-            headers: {
-              Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : ''
-            }
-          })
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('accessToken') ? `Bearer ${localStorage.getItem('accessToken')}` : '',
+          }
+        })
 
         if (!response.ok) {
           console.log("Помилка при завантаженні даних " + response.statusText)
@@ -28,29 +32,27 @@ const DormitoryPage = () => {
         } else {
           const data = await response.json()
           setFetchedData(data)
-          console.log("Дані успішно завантажені")
         }
       } catch (error) {
         console.error("Error fetching data:", error)
         setError("Error fetching threads") // Set generic error message
-      } finally {
-        setIsLoading(false) // Set loading state to false regardless of success or failure
       }
     }
 
     fetchData()
-  }, [])
+  }, [allDormThreads.length, newDormThread])
 
-  const dormitoryThreads = fetchedData || []
 
+  const  dormThreads = fetchedData || []
+
+
+  console.log("Fetch data", dormThreads)
   return (
     <section className="grid md:grid-cols-2 gap-y-1.5 gap-x-1.5">
-      {isLoading ? (
-        <p>Loading threads...</p>
-      ) : error ? (
+      {error ? (
         <p>Error: {error}</p>
       ) : (
-        dormitoryThreads.length > 0 &&  dormitoryThreads.map((element, index) => (
+        dormThreads.length > 0 && dormThreads.map((element, index) => (
           <ThreadGlobal
             text={element.text}
             title={element.title}
@@ -65,4 +67,4 @@ const DormitoryPage = () => {
   )
 }
 
-export default DormitoryPage
+export default FoodPage
