@@ -17,7 +17,7 @@ public class ThreadLike {
     @ManyToOne
     @JsonIgnore
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Thread thread;
     private LocalDateTime likedAt;
 }

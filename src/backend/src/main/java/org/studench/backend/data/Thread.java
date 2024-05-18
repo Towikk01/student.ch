@@ -38,5 +38,13 @@ public class Thread {
     @Column (nullable = true)
     private byte[] imageData;
 
+    @OneToMany (mappedBy = "thread", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List <ThreadLike> likes;
+
+    @OneToMany (mappedBy = "thread", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List <HideThread> hides;
+
 
 }

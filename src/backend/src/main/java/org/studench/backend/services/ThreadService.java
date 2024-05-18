@@ -61,12 +61,11 @@ public class ThreadService {
 
     public List<Thread> getThreadsByTheme(Long themeId) {
         List<Thread> foundThreads = threadRepo.findAllByThemeId(themeId);
-        List<Thread> threads = filterHiddenThreads(foundThreads);
-        System.out.println("Threads: " + threads);
+
 
 
 //        get threads and for each thread get image and decompress it
-        for (Thread thread : threads) {
+        for (Thread thread : foundThreads) {
                 if (thread.getImageData() != null) {
                     try {
                         thread.setImageData(ImageUtil.decompressImage(thread.getImageData()));
@@ -76,6 +75,9 @@ public class ThreadService {
                 }
 
         }
+
+        List <Thread> threads = filterHiddenThreads(foundThreads);
+
 
 
 
@@ -98,9 +100,9 @@ public class ThreadService {
 
     public List<Thread> getLatestThreads() {
         List<Thread> foundThreads = threadRepo.findLatestThreads();
-        List<Thread> threads = filterHiddenThreads(foundThreads);
 
-        for (Thread thread : threads) {
+
+        for (Thread thread : foundThreads) {
             if (thread.getImageData() != null) {
                 try {
                     thread.setImageData(ImageUtil.decompressImage(thread.getImageData()));
@@ -109,8 +111,8 @@ public class ThreadService {
                 }
             }
         }
-        List <Thread> slice = threads.stream().limit(10).toList();
-        return slice;
+        List <Thread> threads = filterHiddenThreads(foundThreads);
+        return threads.stream().limit(10).toList();
     }
 
 

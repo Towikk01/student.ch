@@ -68,7 +68,7 @@ const AdminPanel = () => {
 console.log("users", users)
   return (
     <CustomSection direction="col" center="items-center">
-      {users.length > 0 && (
+      {users && users.length > 0 && (
         <div
         className="border border-orange rounded-[16px] p-2.5 justify-center items-center flex flex-col gap-2 bg-black-pearl/70">
         <h4 className="text-primary text-3xl gap-10">Панель адміністратора</h4>

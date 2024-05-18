@@ -19,7 +19,6 @@ public class CommentReply {
     @ManyToOne
     private Comment comment;
     @ManyToOne
-    @JsonIgnore
     private User author;
     private LocalDateTime date;
 }

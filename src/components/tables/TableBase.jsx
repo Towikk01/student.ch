@@ -8,7 +8,7 @@ export const TableBase = ({ type, data }) => {
   const usersHeader = ['ID', 'Username', 'First Name', 'Last Name', 'Role', "isBanned", 'Registration Date', 'Actions'];
 
   const dispatch = useDispatch();
-  const commentsData =(type==="comments") ? data.map(item => ({
+  const commentsData =(type==="comments") && data ? data.map(item => ({
     id: item.id,
     author: item.author?.username,
     text: item.text,
@@ -17,7 +17,7 @@ export const TableBase = ({ type, data }) => {
   })) : [];
 
 
-  const threadsData =(type==="threads") ? data.map(data => ({
+  const threadsData =(type==="threads") && data ? data.map(data => ({
       id: data.id,
       author: data.author?.username,
       title: data.title,
@@ -26,7 +26,7 @@ export const TableBase = ({ type, data }) => {
     })
   ) : [];
 
-  const usersData =(type==="users") ? data.map(data => ({
+  const usersData =(type==="users") && data ? data.map(data => ({
     id: data.id,
     username: data.username,
     firstName: data.firstName,
@@ -204,10 +204,7 @@ export const TableBase = ({ type, data }) => {
                                  className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
                 }
                 else if (action==='Show') {
-return <Link href={`/thread/${row.id}`} key={index}>
-                    <a onClick={() => preFetchThread(row.id)}
-                       className="text-primary  hover:bg-primary hover:text-[#000]">{action}</a>
-                  </Link>;
+return <Link href={`/${row.id}`} key={index} onClick={() => preFetchThread(row.id)} className="text-primary  hover:bg-primary hover:text-[#000]" >{action}</Link>
                 }
 
 
