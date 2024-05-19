@@ -8,8 +8,6 @@ Student.ch is an imageboard for students and teachers to ask for help, amuse, an
 
    ```bash
    git clone https://github.com/Towikk01/student.ch.git
-   
-    cd student.ch
     ```
    
 2. Install Docker if you haven't already:
