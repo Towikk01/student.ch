@@ -14,6 +14,7 @@ import {isLoggedIn} from '@/lib/slices/userSlice/userSlice'
 import AddToFav from '@/components/button/AddToFav'
 import axios from 'axios'
 import {addComment} from '@/lib/slices/commentSlice/commentSlice'
+import ImageModal from "@/components/threads/ImageModal";
 
 
 const ThreadGlobal = ({
