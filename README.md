@@ -28,7 +28,7 @@ Student.ch is an imageboard for students and teachers to ask for help, amuse, an
    sudo docker-compose up
    ```
    
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result
 
   
   
