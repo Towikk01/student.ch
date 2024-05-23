@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux'
 import {isLoggedIn} from '@/lib/slices/userSlice/userSlice'
 import AddToFav from '@/components/button/AddToFav'
 import axios from 'axios'
-import {addComment} from '@/lib/slices/commentSlice/commentSlice'
+import {addComment, selectComments} from '@/lib/slices/commentSlice/commentSlice'
 import ImageModal from "@/components/threads/ImageModal";
 
 
@@ -61,10 +61,10 @@ const ThreadGlobal = ({
                 'Content-Type' : 'multipart/form-data'
             }
         }).then (response => {
-            if (!response.status === 200) {
+            if (response.status !== 200) {
 
             } else {
-                dispatch (addComment (response.data))
+                dispatch (addComment (reply.text))
                 setReply ({
                     text : '',
                     image : null
@@ -75,6 +75,7 @@ const ThreadGlobal = ({
         })
     }
     const dispatch = useDispatch ()
+    console.log("comment" , useSelector (selectComments))
 
     const handleImageClick = imageSrc => {
         setSelectedImage (imageSrc);

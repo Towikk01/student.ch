@@ -6,6 +6,7 @@ import { isLoggedIn } from '@/lib/slices/userSlice/userSlice'
 import { TableBase } from '@/components/tables/TableBase'
 import { router } from 'next/client'
 import { useRouter } from 'next/navigation'
+import {selectDeletedComments, selectDeletedThreads} from "@/lib/slices/moderatorPageSlice/moderatorPageSlice";
 
 
 const AdminPanel = () => {
@@ -13,6 +14,8 @@ const AdminPanel = () => {
   const [comments, setComments] = useState([])
   const [threads, setThreads] = useState([])
   const router = useRouter()
+    const deletedComments = useSelector (selectDeletedComments)
+    const deletedThreads = useSelector (selectDeletedThreads)
 
 
   if (!loggedIn) {
@@ -65,7 +68,7 @@ const AdminPanel = () => {
       console.error('Error fetching data:', error)
     })
   }
-  , [])
+  , [ deletedComments.length])
 
   useEffect(() => {
       fetch('http://localhost:8080/thread/moderator/all_threads', {
@@ -88,7 +91,7 @@ const AdminPanel = () => {
         console.error('Error fetching data:', error)
       })
     }
-    , [])
+    , [deletedThreads.length])
 
   return (
         <CustomSection direction="col" center="items-center">

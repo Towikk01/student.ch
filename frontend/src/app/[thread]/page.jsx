@@ -81,7 +81,6 @@ const ThreadPage = () => {
 
 
 
-console.log ("commentReply", commentReply)
   return (
     <CustomSection direction="col" center="items-start">
       <div className="grid grid-cols-1 gap-y-1.5">
@@ -105,6 +104,7 @@ console.log ("commentReply", commentReply)
           imageData={element.imageData}
           key={index}
           id = {element.id}
+          role={element.author.role.name}
         />
 
 ))}

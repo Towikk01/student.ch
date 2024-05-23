@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import {resetThreadId, saveThreadId} from '@/lib/slices/threadSlice/threadSlice'
 import {useDispatch, useSelector} from 'react-redux'
-import {banUser, selectBannedUsers, unbanUser} from "@/lib/slices/userBanSlice/userBanSlice";
+import {banUser,  unbanUser} from "@/lib/slices/userBanSlice/userBanSlice";
 import {makeModerator, makeUser} from "@/lib/slices/userModeratorSlice/userModeratorSlice";
+import {deleteComment, deleteThread} from "@/lib/slices/moderatorPageSlice/moderatorPageSlice";
 
 export const TableBase = ({type, data}) => {
 
-    const allBannedUsers = useSelector (selectBannedUsers);
     const headers = {
         comments : ['ID', 'Author', 'Text', 'Date', 'Actions'],
         threads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
@@ -75,10 +75,10 @@ export const TableBase = ({type, data}) => {
                     Authorization : localStorage.getItem ('accessToken') ? `Bearer ${localStorage.getItem ('accessToken')}` : '',
                 },
             }).then (response => {
-                if (!response.status !== 204) {
+                if (response.status !== 204 && response.status !== 200) {
                     console.log ('Помилка при видаленні коментаря')
                 } else {
-                    return response.json ()
+                    dispatch(deleteThread (id));
                 }
             }).then (data => {
                 console.log (data)
@@ -93,10 +93,10 @@ export const TableBase = ({type, data}) => {
                     Authorization : localStorage.getItem ('accessToken') ? `Bearer ${localStorage.getItem ('accessToken')}` : '',
                 },
             }).then (response => {
-                if (!response.status !== 204) {
+                if (response.status !== 204 && response.status !== 200) {
                     console.log ('Помилка при видаленні коментаря')
                 } else {
-                    return response.json ()
+                    dispatch(deleteComment (id));
                 }
             }).then (data => {
                 console.log (data)

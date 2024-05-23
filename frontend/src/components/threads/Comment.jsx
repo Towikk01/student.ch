@@ -14,7 +14,8 @@ const Comment = ({
                        date,
                        id,
                        imageData,
-                       text
+                       text,
+    role
                      }) => {
 
 
@@ -57,13 +58,15 @@ const Comment = ({
         if (!response.status === 200) {
           alert('Помилка при додаванні коментаря')
         } else {
-          dispatch(addCommentReply(response.data))
+          dispatch(addCommentReply(commentReply))
           setCommentReply('')
           setShowReplyForm(false)
         }
       }
     )
   }
+
+  console.log("COMMENT REPLY", useSelector(selectCommentReplies))
 
 
 
@@ -91,7 +94,16 @@ const Comment = ({
             }
           </div>
           <div className="flex flex-row gap-1 items-center justify-end">
-            <p className="text-[10px] text-primary">{username}</p>
+              {role&& role === "USER" ?
+                  <p className="text-[10px] text-primary">{username}</p> :
+
+                  role && role === "MODERATOR" ?
+                      <p className="text-[10px] text-[#FFFF00]">{username}</p> :
+                      role && role === "ADMIN" ?
+                          <p className="text-[10px] text-[#FF0000]">{username}</p> :
+                          null
+
+              }
             <p className="text-[10px] text-primary">{date.slice(0, 10)}</p>
             <span className="text-[10px] text-red-500">{id}</span>
           </div>
@@ -125,7 +137,8 @@ const Comment = ({
             text={element.text}
             imageData={element.imageData}
             key={index}
-            commentId={element.comment.id}
+            commentId={id}
+            role={element.author?.role.name}
 
           />
         ))}

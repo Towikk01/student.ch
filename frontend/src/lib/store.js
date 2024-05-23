@@ -9,6 +9,7 @@ import {commentSlice} from '@/lib/slices/commentSlice/commentSlice';
 import {commentReplySlice} from '@/lib/slices/commentReplySlice/commentReplySlice';
 import {userBanSlice} from '@/lib/slices/userBanSlice/userBanSlice';
 import {userModeratorSlice} from '@/lib/slices/userModeratorSlice/userModeratorSlice';
+import {moderatorPageSlice} from '@/lib/slices/moderatorPageSlice/moderatorPageSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
 		commentReply: commentReplySlice.reducer,
 		userBan: userBanSlice.reducer,
 		userModerator: userModeratorSlice.reducer,
+		moderatorPage: moderatorPageSlice.reducer,
 	},
 });

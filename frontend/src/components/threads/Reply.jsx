@@ -9,6 +9,7 @@ export const Reply = ({
                        id,
                        text,
                         commentId,
+                        role
                      }) => {
 
 
@@ -21,8 +22,15 @@ export const Reply = ({
       <div className="w-fit flex flex-col">
         <div className="post-actions flex flex-row justify-between gap-1.5 items-center">
           <div className="flex flex-row gap-1 items-center justify-end">
-            <p className="text-[10px] text-primary">{username}</p>
-            <p className="text-[10px] text-primary">{date.slice(0, 10)}</p>
+              {
+                  role && role === "MODERATOR" ?
+                      <p className="text-[10px] text-[#FFFF00]">{username}</p> :
+                      role && role === "ADMIN" ?
+                          <p className="text-[10px] text-[#FF0000]">{username}</p> :
+                          <p className="text-[10px] text-primary">{username}</p>
+
+              }
+              <p className="text-[10px] text-primary">{date.slice(0, 10)}</p>
             <span className="text-[10px] text-red-500">{`Reply to: ` +commentId}</span>
           </div>
         </div>
