@@ -2,6 +2,7 @@ import Link from 'next/link'
 import {resetThreadId, saveThreadId} from '@/lib/slices/threadSlice/threadSlice'
 import {useDispatch, useSelector} from 'react-redux'
 import {banUser, selectBannedUsers, unbanUser} from "@/lib/slices/userBanSlice/userBanSlice";
+import {makeModerator, makeUser} from "@/lib/slices/userModeratorSlice/userModeratorSlice";
 
 export const TableBase = ({type, data}) => {
 
@@ -152,9 +153,10 @@ export const TableBase = ({type, data}) => {
                 Authorization : localStorage.getItem ('accessToken') ? `Bearer ${localStorage.getItem ('accessToken')}` : '',
             },
         }).then (response => {
-            if (!response.status !== 204) {
+            if (response.status !== 200 && response.status !== 204) {
                 console.log ('Виникла помилка')
             } else {
+                dispatch(makeModerator(id));
                 return response.json ()
             }
         }).then (data => {
@@ -171,9 +173,10 @@ export const TableBase = ({type, data}) => {
                 Authorization : localStorage.getItem ('accessToken') ? `Bearer ${localStorage.getItem ('accessToken')}` : '',
             },
         }).then (response => {
-            if (!response.status !== 204) {
+            if (response.status !== 200 && response.status !== 204) {
                 console.log ('Виникла помилка')
             } else {
+                dispatch(makeUser(id));
                 return response.json ()
             }
         }).then (data => {

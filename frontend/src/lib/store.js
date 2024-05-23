@@ -8,6 +8,7 @@ import {threadSlice} from '@/lib/slices/threadSlice/threadSlice';
 import {commentSlice} from '@/lib/slices/commentSlice/commentSlice';
 import {commentReplySlice} from '@/lib/slices/commentReplySlice/commentReplySlice';
 import {userBanSlice} from '@/lib/slices/userBanSlice/userBanSlice';
+import {userModeratorSlice} from '@/lib/slices/userModeratorSlice/userModeratorSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
 		comment: commentSlice.reducer,
 		commentReply: commentReplySlice.reducer,
 		userBan: userBanSlice.reducer,
+		userModerator: userModeratorSlice.reducer,
 	},
 });

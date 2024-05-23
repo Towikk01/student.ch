@@ -7,6 +7,7 @@ import { TableBase } from '@/components/tables/TableBase'
 import { router } from 'next/client'
 import { useRouter } from 'next/navigation'
 import {banUser, selectBannedUsers} from "@/lib/slices/userBanSlice/userBanSlice";
+import {selectModerators, selectUsers} from "@/lib/slices/userModeratorSlice/userModeratorSlice";
 
 
 const AdminPanel = () => {
@@ -16,6 +17,9 @@ const AdminPanel = () => {
     const dispatch = useDispatch
 
     const bannedUsers = useSelector (selectBannedUsers)
+    const usersArray = useSelector (selectUsers  )
+    const  moderatorsArray = useSelector (selectModerators)
+
 
 
 
@@ -71,7 +75,7 @@ const AdminPanel = () => {
         console.error('Error fetching data:', error)
       })
     }
-    , [bannedUsers.length]);
+    , [bannedUsers.length, usersArray.length, moderatorsArray.length])
 
   console.log("bannedUsers", bannedUsers)
 
