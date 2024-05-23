@@ -120,8 +120,8 @@ const ThreadGlobal = ({
             {imageData &&
                 <div className="w-max h-max">
                     <img src={`data:image/png;base64,${imageData}`} alt="Post image"
-                         className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square"/>
-                    onClick={() => handleImageClick (`data:image/png;base64,${imageData}`)}
+                         className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square"  onClick={() => handleImageClick (`data:image/png;base64,${imageData}`)}/>
+
 
                 </div>
 
