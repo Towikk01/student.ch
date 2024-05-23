@@ -94,6 +94,7 @@ console.log ("commentReply", commentReply)
             date={thread.date}
             username={thread.author.username}
             imageData={thread.imageData}
+            role = {thread.author.role.name}
           />
         )}
         {comments.length > 0 && comments.map((element, index) => (

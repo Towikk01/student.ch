@@ -60,6 +60,7 @@ const FoodPage = () => {
             id={element.id}
             username={element.author.username}
             imageData={element.imageData}
+            role = {element.author.role.name}
           />
         ))
       )}

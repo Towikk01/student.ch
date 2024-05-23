@@ -23,7 +23,8 @@ const ThreadGlobal = ({
                           date,
                           id,
                           username,
-                          imageData
+                          imageData,
+                          role
                       }) => {
 
 
@@ -175,7 +176,16 @@ const ThreadGlobal = ({
                         )}
                     </div>
                     <div className="flex flex-row gap-1 items-center justify-end">
-                        <p className="text-[10px] text-primary">{username}</p>
+                        {role&& role === "USER" ?
+                            <p className="text-[10px] text-primary">{username}</p> :
+
+                            role && role === "MODERATOR" ?
+                                <p className="text-[10px] text-[#FFFF00]">{username}</p> :
+                                role && role === "ADMIN" ?
+                                    <p className="text-[10px] text-[#FF0000]">{username}</p> :
+                                    null
+
+                        }
                         <p className="text-[10px] text-primary">{date && date.slice (0, 10)}</p>
                         {/*<span className="text-[10px] text-primary">{id}</span>*/}
                     </div>

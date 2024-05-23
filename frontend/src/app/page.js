@@ -49,7 +49,7 @@ export default function Home() {
 				<h4 className='text-primary text-base md:text-2xl'>Останні треди</h4>
 				<div className='w-full h-full gap-2 flex flex-col justify-end'>
 					{latestThreads.map((data, index) => (
-						<ThreadGlobal title={data.title} text={data.text} imageData={data.imageData} key={index} id={data.id} />
+						<ThreadGlobal title={data.title} text={data.text} imageData={data.imageData} key={index} username={data.author.username} id={data.id} role = {data.author.role.name} />
 					))}
 				</div>
 			</div>
