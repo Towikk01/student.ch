@@ -71,7 +71,7 @@ const LoginPage = () => {
           username: '',
           password: ''
         });
-        dispatch(logIn({ username: userData.username, password: userData.password }));
+        dispatch(logIn({ username: userData.username, password: userData.password}));
 
         // Redirect to home page
         router.push('/');

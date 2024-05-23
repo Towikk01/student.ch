@@ -6,7 +6,7 @@ import Link from 'next/link'
 import CustomLink from '@/components/header/CustomLink'
 import Button from '@/components/button/Button'
 import BurgerMenu from '@/components/burger-menu/BurgerMenu'
-import { logOut, isLoggedIn } from '@/lib/slices/userSlice/userSlice'
+import {logOut, isLoggedIn, selectRole, user} from '@/lib/slices/userSlice/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 
@@ -25,6 +25,7 @@ const Header = () => {
   const [opened, setOpened] = useState(false)
   const router = useRouter()
   const [role, setRole] = useState('')
+    const currentUser = useSelector(user)
 
   useEffect(() => {
     fetch('http://localhost:8080/me/role', {
@@ -51,7 +52,10 @@ const Header = () => {
         console.error('Error fetching data:', error)
       }
     )
-  }, [])
+  }, [currentUser])
+
+
+    console.log("CURRENT USER", currentUser)
 
   const toggleMenu = () => {
     setOpened(!opened)
