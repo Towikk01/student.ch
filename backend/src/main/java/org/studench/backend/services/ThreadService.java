@@ -185,5 +185,18 @@ public class ThreadService {
         threadRepo.deleteById(threadId);
     }
 
+    public List <Thread> getAllHiddenThreads (){
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List <HideThread> hiddenThreads = hideThreadRepo.findByUserId(currentUser.getId());
+        List <Thread> threads = hiddenThreads.stream().map(HideThread::getThread).collect(Collectors.toList());
+        return threads;
+
+    }
+
+    public void unhideThread(Long threadId) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        hideThreadRepo.deleteByThreadIdAndUserId(threadId, currentUser.getId());
+    }
+
 
 }

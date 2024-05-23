@@ -143,6 +143,29 @@ public class ThreadController {
         }
     }
 
+    @GetMapping ("/getAllHiddenThreads")
+    public ResponseEntity <List <Thread>> getAllHiddenThreads () {
+        try {
+           return  ResponseEntity.ok().body(threadService.getAllHiddenThreads());
+
+        } catch (Exception e){
+            log.error("Error while deleting thread", e);
+            throw new RuntimeException("Error while deleting thread", e);
+        }
+    }
+
+    @DeleteMapping ("/{threadId}/unhide")
+    public ResponseEntity <String> unhideThread (@PathVariable Long threadId) {
+        try {
+            threadService.unhideThread(threadId);
+
+            return ResponseEntity.ok().body("{\"message\":\"Thread unhidden\"}");
+        } catch (Exception e) {
+            log.error("Error while unhiding thread", e);
+            throw new RuntimeException("Error while unhiding thread", e);
+        }
+    }
+
 
 
 
