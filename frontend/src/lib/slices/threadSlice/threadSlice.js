@@ -1,5 +1,3 @@
-// It should contain the slice for the thread id to save it after clicking on the thread
-//
 import {createSlice} from '@reduxjs/toolkit';
 
 export const threadSlice = createSlice({

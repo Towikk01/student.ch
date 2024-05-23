@@ -1,3 +1,4 @@
+version: '3'
 services:
   client-frontend:
     image: frontend:latest
@@ -20,8 +21,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/studench
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-    depends_on:
-      - db
+
 
   db:
     image: 'postgres:latest'
@@ -29,9 +29,14 @@ services:
     environment:
       - 'POSTGRES_PASSWORD=postgres'
       - 'POSTGRES_USER=postgres'
-
-
+      - 'POSTGRES_DB=studench'
     ports:
-        - '15432:5432'
+      - '15432:5432'
     volumes:
-      - ./backend/src/main/resources/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - pgdata:/var/lib/postgresql/data
+    depends_on:
+      - backend
+
+
+volumes:
+  pgdata:
