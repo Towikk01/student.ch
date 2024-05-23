@@ -29,7 +29,7 @@ public class Thread {
     private Long id;
     private String title;
     private String text;
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "thread")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "thread")
     @JsonIgnore
     private List<Comment> comments;
     @ManyToOne
@@ -49,6 +49,7 @@ public class Thread {
     @OneToMany (mappedBy = "thread", cascade = CascadeType.ALL)
     @JsonIgnore
     private List <HideThread> hides;
+
 
 
 }

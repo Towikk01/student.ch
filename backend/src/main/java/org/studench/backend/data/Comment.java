@@ -25,5 +25,8 @@ public class Comment {
     @JdbcTypeCode(Types.BINARY)
     @Column (nullable = true)
     private byte[] imageData;
+    @OneToMany (mappedBy = "comment", cascade = CascadeType.ALL)
+
+    private List<CommentReply> commentReplies;
 
 }
