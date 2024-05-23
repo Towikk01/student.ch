@@ -9,14 +9,17 @@ import {useRouter} from 'next/navigation'
 import ThreadGlobal from '@/components/threads/ThreadGlobal'
 import {resetThreadId, saveThreadId} from '@/lib/slices/threadSlice/threadSlice'
 import {TableBase} from "@/components/tables/TableBase";
+import {selectUnhiddenThreads} from "@/lib/slices/hiddenThreadsSlice/hiddenThreadsSlice";
 
 const PersonalAccountPage = () => {
     const userData = useSelector (user)
     const [userLikesData, setUserLikesData] = useState ([])
+    const [hiddenThreads, setHiddenThreads] = useState ([])
     const [username, setUsername] = useState (userData.username)
     const [editMode, setEditMode] = useState (false)
     const dispatch = useDispatch ()
     const router = useRouter ()
+    const unhiddenThreads = useSelector (selectUnhiddenThreads)
 
     const [fetchedData, setFetchedData] = useState ({
             username : '',
@@ -103,6 +106,26 @@ const PersonalAccountPage = () => {
             )
     }, [])
 
+    useEffect(() => {
+        fetch("http://localhost:8080/thread/getAllHiddenThreads", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+
+        }).then((response) => {
+            if (!response.ok) {
+                console.log("Помилка при завантаженні даних");
+            } else {
+                return response.json();
+            }
+        })
+        .then((response) => {
+            setHiddenThreads(response);
+        });
+    }, [ unhiddenThreads.length ]);
+
     const handleThreadClick = (e) => {
         dispatch (resetThreadId ());
         dispatch (saveThreadId (e.target.innerText));
@@ -152,8 +175,9 @@ const PersonalAccountPage = () => {
                 </div>
                 <div className="flex flex-col gap-1">
                     <h6 className="text-peach text-sm text-center">Ваші вподобайки</h6>
-                    <div className="flex flex-col sm:flex-row w-full justify-evenly items-center  gap-3">
+                    <div className="flex flex-col w-full justify-evenly items-center  gap-3">
                         <TableBase type={'likedThreads'} data={userLikesData}/>
+                        <TableBase type={'hiddenThreads'} data={hiddenThreads}/>
                     </div>
                 </div>
             </div>

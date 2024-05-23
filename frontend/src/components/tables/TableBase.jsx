@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {banUser,  unbanUser} from "@/lib/slices/userBanSlice/userBanSlice";
 import {makeModerator, makeUser} from "@/lib/slices/userModeratorSlice/userModeratorSlice";
 import {deleteComment, deleteThread} from "@/lib/slices/moderatorPageSlice/moderatorPageSlice";
+import {unhideThread} from "@/lib/slices/hiddenThreadsSlice/hiddenThreadsSlice";
 
 export const TableBase = ({type, data}) => {
 
@@ -12,7 +13,7 @@ export const TableBase = ({type, data}) => {
         threads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
         users : ['ID', 'Username', 'First Name', 'Last Name', 'Role', "isBanned", 'Registration Date', 'Actions'],
         likedThreads : ['THREAD_ID', 'Author', 'Title', 'Text'],
-        hiddenThreads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
+        hiddenThreads : ['THREAD_ID', 'Author', 'Title', 'Text', 'Actions'],
     };
 
 
@@ -42,16 +43,33 @@ export const TableBase = ({type, data}) => {
         text : item.thread.text
 
     })) : [];
-    const mapHiddenThreadsData = (data) => data.map (item => ({
+    const mapHiddenThreadsData = (type === "hiddenThreads") && data ? data.map (item => ({
         id : item.id,
         author : item.author?.username,
         title : item.title,
-        date : item.date.substring (0, 10),
-        actions : ['Unhide', 'Delete']
-    }));
+        text : item.text,
+        actions : ['Unhide']
+    })) : [];
     const onUnlikeClick = (id) => {
     };
     const onUnhideClick = (id) => {
+        fetch (`http://localhost:8080/thread/${id}/unhide`, {
+            method : 'DELETE',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization : localStorage.getItem ('accessToken') ? `Bearer ${localStorage.getItem ('accessToken')}` : '',
+            },
+        }).then (response => {
+            if (response.status !== 200) {
+                console.log ('Помилка при скасуванні сховування')
+            } else {
+                dispatch(unhideThread (id));
+            }
+        }).then (data => {
+            console.log (data)
+        }).catch (error => {
+            console.error ('Error fetching data:', error)
+        })
     };
 
     const usersData = (type === "users") && data ? data.map (data => ({
@@ -281,8 +299,9 @@ export const TableBase = ({type, data}) => {
                                 } else if (action === 'Make User') {
                                     return <button key={index} onClick={() => onMakeUserClick (row.id)}
                                                    className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
-                                } else {
-                                    return null;
+                                } else if ( action === 'Unhide') {
+                                    return <button key={index} onClick={() => onUnhideClick (row.id)}
+                                                   className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
                                 }
                             })}
                         </td>

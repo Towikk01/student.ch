@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.multipart.MultipartFile;
 import org.studench.backend.data.*;
@@ -147,7 +148,7 @@ public class ThreadService {
         return threadLikeRepo.findByUserId(currentUser.getId());
     }
 
-    public boolean unlikeThread(Long threadId) {
+    public boolean giunlikeThread(Long threadId) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<ThreadLike> like = threadLikeRepo.findByUserIdAndThreadId(currentUser.getId(), threadId);
         if (like.isPresent()) {
@@ -193,6 +194,7 @@ public class ThreadService {
 
     }
 
+    @Transactional
     public void unhideThread(Long threadId) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         hideThreadRepo.deleteByThreadIdAndUserId(threadId, currentUser.getId());
