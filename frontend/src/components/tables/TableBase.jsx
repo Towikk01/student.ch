@@ -11,7 +11,7 @@ export const TableBase = ({type, data}) => {
         comments : ['ID', 'Author', 'Text', 'Date', 'Actions'],
         threads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
         users : ['ID', 'Username', 'First Name', 'Last Name', 'Role', "isBanned", 'Registration Date', 'Actions'],
-        likedThreads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
+        likedThreads : ['THREAD_ID', 'Author', 'Title', 'Text'],
         hiddenThreads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
     };
 
@@ -35,13 +35,13 @@ export const TableBase = ({type, data}) => {
         })
     ) : [];
 
-    const mapLikedThreadsData = (data) => data.map (item => ({
-        id : item.id,
-        author : item.author?.username,
-        title : item.title,
-        date : item.date.substring (0, 10),
-        actions : ['Unlike', 'Delete']
-    }));
+    const mapLikedThreadsData = (type === "likedThreads") && data ? data.map (item => ({
+        id : item.thread.id,
+        author : item.thread.author?.username,
+        title : item.thread.title,
+        text : item.thread.text
+
+    })) : [];
     const mapHiddenThreadsData = (data) => data.map (item => ({
         id : item.id,
         author : item.author?.username,

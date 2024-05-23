@@ -8,6 +8,7 @@ import {router} from 'next/client'
 import {useRouter} from 'next/navigation'
 import ThreadGlobal from '@/components/threads/ThreadGlobal'
 import {resetThreadId, saveThreadId} from '@/lib/slices/threadSlice/threadSlice'
+import {TableBase} from "@/components/tables/TableBase";
 
 const PersonalAccountPage = () => {
     const userData = useSelector (user)
@@ -135,7 +136,7 @@ const PersonalAccountPage = () => {
                                 <button
                                     onClick={handleEditToggle}
                                     className="text-primary text-[12px] hover:text-peach bg-black-pearl rounded-xl border-orange border px-1 py-1 transition-all duration-200 font-bold sm:absolute right-[80px] top-2">
-                                    Відмінити
+                                    Скасувати
                                 </button>
                             </div>
                         ) : (
@@ -152,11 +153,7 @@ const PersonalAccountPage = () => {
                 <div className="flex flex-col gap-1">
                     <h6 className="text-peach text-sm text-center">Ваші вподобайки</h6>
                     <div className="flex flex-col sm:flex-row w-full justify-evenly items-center  gap-3">
-                        {userLikesData.map ((like, index) => (
-                            <Link onClick={handleThreadClick} href={`/${like.thread.id}`} key={index}
-                                  className="bg-peach/80 px-1.5 py-1.5 rounded-sm">{like.thread.id}</Link>
-
-                        ))}
+                        <TableBase type={'likedThreads'} data={userLikesData}/>
                     </div>
                 </div>
             </div>
