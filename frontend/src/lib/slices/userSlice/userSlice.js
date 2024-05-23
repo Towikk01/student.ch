@@ -10,6 +10,7 @@ export const userSlice = createSlice({
 			likes: [],
 		},
 		isLoggedIn: Boolean(localStorage.getItem('accessToken')),
+		isBanned: false,
 	},
 	reducers: {
 		logIn(state, action) {

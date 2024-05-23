@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import {resetThreadId, saveThreadId} from '@/lib/slices/threadSlice/threadSlice'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
+import {banUser, selectBannedUsers, unbanUser} from "@/lib/slices/userBanSlice/userBanSlice";
 
 export const TableBase = ({type, data}) => {
+
+    const allBannedUsers = useSelector (selectBannedUsers);
     const headers = {
         comments : ['ID', 'Author', 'Text', 'Date', 'Actions'],
         threads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
@@ -102,6 +105,8 @@ export const TableBase = ({type, data}) => {
         }
     }
     const onBanClick = (id) => {
+
+
         fetch (`http://localhost:8080/users/admin/${id}/ban`, {
             method : 'PATCH',
             headers : {
@@ -109,17 +114,17 @@ export const TableBase = ({type, data}) => {
                 Authorization : localStorage.getItem ('accessToken') ? `Bearer ${localStorage.getItem ('accessToken')}` : '',
             },
         }).then (response => {
-            if (!response.status !== 204) {
-                console.log ('Помилка при бані')
+            if (response.status !== 200) {
+                console.log ('Помилка при бані', response.status)
             } else {
-                return response.json ()
+                dispatch(banUser(id));
             }
         }).then (data => {
             console.log (data)
         }).catch (error => {
             console.error ('Error fetching data:', error)
         })
-    }
+    };
     const onUnbanClick = (id) => {
         fetch (`http://localhost:8080/users/admin/${id}/unban`, {
             method : 'PATCH',
@@ -128,10 +133,10 @@ export const TableBase = ({type, data}) => {
                 Authorization : localStorage.getItem ('accessToken') ? `Bearer ${localStorage.getItem ('accessToken')}` : '',
             },
         }).then (response => {
-            if (!response.status !== 204) {
+            if (response.status !== 200) {
                 console.log ('Помилка при розбані')
             } else {
-                return response.json ()
+                dispatch(unbanUser(id));
             }
         }).then (data => {
             console.log (data)
@@ -196,7 +201,7 @@ export const TableBase = ({type, data}) => {
     // const dataToShow = type === 'comments' ? commentsData : type === 'threads' ? threadsData : usersData;
     // const headerData = type === 'comments' ? commentsHeader : type === 'threads' ? threadsHeader : usersHeader;
 
-    const dataToShow = mapData[type] ? mapData[type] (data) : [];
+    const dataToShow = mapData[type] || [];
     const headerData = headers[type] || [];
 
     const handleActionClick = (action, id) => {
@@ -245,43 +250,6 @@ export const TableBase = ({type, data}) => {
             </tr>
             </thead>
             <tbody>
-            {/*{dataToShow.map ((row, index) => (*/}
-            {/*    <tr key={index} className="bg-black-pearl/50 ">*/}
-            {/*        {Object.keys (row).map ((key, index) => (*/}
-            {/*            key !== 'actions' &&*/}
-            {/*            <td key={index}*/}
-            {/*                className="text-primary text-center border-[1px] border-b-primary">{row[key]}</td>*/}
-            {/*        ))}*/}
-            {/*        {row.actions && (*/}
-            {/*            <td className="text-primary text-center flex flex-col gap-1 border-[1px] border-b-primary">*/}
-            {/*                {row.actions.map ((action, index) => {*/}
-            {/*                    if (action === 'Delete') {*/}
-            {/*                        return <button key={index} onClick={() => onDeleteClick (row.id, type)}*/}
-            {/*                                       className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;*/}
-            {/*                    } else if (action === 'Ban') {*/}
-            {/*                        return <button key={index} onClick={() => onBanClick (row.id)}*/}
-            {/*                                       className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;*/}
-            {/*                    } else if (action === 'Unban') {*/}
-            {/*                        return <button key={index} onClick={() => onUnbanClick (row.id)}*/}
-            {/*                                       className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;*/}
-            {/*                    } else if (action === 'Show') {*/}
-            {/*                        return <Link href={`/${row.id}`} key={index} onClick={() => preFetchThread (row.id)}*/}
-            {/*                                     className="text-primary  hover:bg-primary hover:text-[#000]">{action}</Link>*/}
-            {/*                    } else if (action === 'Make Moderator') {*/}
-            {/*                        return <button key={index} onClick={() => onMakeModeratorClick (row.id)}*/}
-            {/*                                       className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;*/}
-            {/*                    } else if (action === 'Make User') {*/}
-            {/*                        return <button key={index} onClick={() => onMakeUserClick (row.id)}*/}
-            {/*                                       className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;*/}
-            {/*                    } else {*/}
-            {/*                        return null;*/}
-            {/*                    }*/}
-            {/*                })}*/}
-            {/*            </td>*/}
-            {/*        )}*/}
-            {/*    </tr>*/}
-            {/*))}*/}
-
             {dataToShow.map ((row, index) => (
                 <tr key={index} className="bg-black-pearl/50 ">
                     {Object.keys (row).map ((key, index) => (
@@ -291,19 +259,56 @@ export const TableBase = ({type, data}) => {
                     ))}
                     {row.actions && (
                         <td className="text-primary text-center flex flex-col gap-1 border-[1px] border-b-primary">
-                            {row.actions.map ((action, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleActionClick (action, row.id)}
-                                    className="text-primary hover:bg-primary hover:text-[#000]"
-                                >
-                                    {action}
-                                </button>
-                            ))}
+                            {row.actions.map ((action, index) => {
+                                if (action === 'Delete') {
+                                    return <button key={index} onClick={() => onDeleteClick (row.id, type)}
+                                                   className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
+                                } else if (action === 'Ban') {
+                                    return <button key={index} onClick={() => onBanClick (row.id)}
+                                                   className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
+                                } else if (action === 'Unban') {
+                                    return <button key={index} onClick={() => onUnbanClick (row.id)}
+                                                   className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
+                                } else if (action === 'Show') {
+                                    return <Link href={`/${row.id}`} key={index} onClick={() => preFetchThread (row.id)}
+                                                 className="text-primary  hover:bg-primary hover:text-[#000]">{action}</Link>
+                                } else if (action === 'Make Moderator') {
+                                    return <button key={index} onClick={() => onMakeModeratorClick (row.id)}
+                                                   className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
+                                } else if (action === 'Make User') {
+                                    return <button key={index} onClick={() => onMakeUserClick (row.id)}
+                                                   className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
+                                } else {
+                                    return null;
+                                }
+                            })}
                         </td>
                     )}
                 </tr>
             ))}
+
+            {/*{dataToShow.map ((row, index) => (*/}
+            {/*    <tr key={index} className="bg-black-pearl/50 ">*/}
+            {/*        {Object.keys (row).map ((key, index) => (*/}
+            {/*            key !== 'actions' &&*/}
+            {/*            <td key={index}*/}
+            {/*                className="text-primary text-center border-[1px] border-b-primary">{row[key]}</td>*/}
+            {/*        ))}*/}
+            {/*        {row.actions && (*/}
+            {/*            <td className="text-primary text-center flex flex-col gap-1 border-[1px] border-b-primary">*/}
+            {/*                {row.actions.map ((action, index) => (*/}
+            {/*                    <button*/}
+            {/*                        key={index}*/}
+            {/*                        onClick={() => handleActionClick (action, row.id)}*/}
+            {/*                        className="text-primary hover:bg-primary hover:text-[#000]"*/}
+            {/*                    >*/}
+            {/*                        {action}*/}
+            {/*                    </button>*/}
+            {/*                ))}*/}
+            {/*            </td>*/}
+            {/*        )}*/}
+            {/*    </tr>*/}
+            {/*))}*/}
             </tbody>
         </table>
     )
