@@ -148,7 +148,7 @@ public class ThreadService {
         return threadLikeRepo.findByUserId(currentUser.getId());
     }
 
-    public boolean giunlikeThread(Long threadId) {
+    public boolean unlikeThread(Long threadId) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<ThreadLike> like = threadLikeRepo.findByUserIdAndThreadId(currentUser.getId(), threadId);
         if (like.isPresent()) {

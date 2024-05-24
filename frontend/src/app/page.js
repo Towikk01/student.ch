@@ -2,12 +2,13 @@
 import CustomSection from '@/components/custom-section/CustomSection';
 import ThreadGlobal from '@/components/threads/ThreadGlobal';
 import React, {useEffect, useState} from 'react';
-import {changeIsInThread, changeIsNotInThread} from '@/lib/slices/threadSlice/threadSlice';
-import {useDispatch} from 'react-redux';
+import {changeIsNotInThread, selectHiddenThreads} from '@/lib/slices/threadSlice/threadSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function Home() {
 	const [fetchedData, setFetchedData] = useState([]);
 	const dispatch = useDispatch();
+	const hiddenThreads = useSelector(selectHiddenThreads);
 	useEffect(() => {
 		const fetchData = async () => {
 			await fetch('http://localhost:8080/thread/latest', {
@@ -26,7 +27,9 @@ export default function Home() {
 		};
 
 		fetchData();
-	}, [fetchedData.length]);
+	}, [hiddenThreads.length]);
+
+	console.log('HIdden threads', hiddenThreads);
 
 	useEffect(() => {
 		dispatch(changeIsNotInThread());

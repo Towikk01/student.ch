@@ -4,13 +4,14 @@ import ThreadGlobal from '@/components/threads/ThreadGlobal'
 import { useSelector } from 'react-redux'
 import { selectFoodThreads, selectLatestFoodThread } from '@/lib/slices/food-threads/foodThreadsSlice'
 import { checkCustomRoutes } from 'next/dist/lib/load-custom-routes'
+import {selectHiddenThreads} from "@/lib/slices/threadSlice/threadSlice";
 
 const FoodPage = () => {
   const [fetchedData, setFetchedData] = useState()
   const [error, setError] = useState(null) // Track potential errors
   const newFoodThread = useSelector(selectLatestFoodThread)
   const allFoodThreads = useSelector(selectFoodThreads)
-
+    const hiddenThreads = useSelector(selectHiddenThreads);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +41,7 @@ const FoodPage = () => {
     }
 
     fetchData()
-  }, [allFoodThreads.length, newFoodThread])
+  }, [allFoodThreads.length, newFoodThread, hiddenThreads.length])
 
 
   const  foodThreads = fetchedData || []

@@ -15,4 +15,6 @@ public interface UserRepo extends JpaRepository<User, Long>{
     @Query("select u from User u where u.role.name = 'USER' or u.role.name = 'MODERATOR'")
     List<User> findAllUsersAndModerators();
 
+
+
 }

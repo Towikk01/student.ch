@@ -17,4 +17,6 @@ public interface ThreadRepo extends JpaRepository<Thread, Long> {
     @Query("select t from Thread t order by t.date desc")
 
     List<Thread> findLatestThreads();
+
+    boolean existsByText (String text);
 }

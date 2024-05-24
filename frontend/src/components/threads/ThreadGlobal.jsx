@@ -106,10 +106,13 @@ const ThreadGlobal = ({
         }).then (response => {
                 if (!response.ok) {
                     console.log ('Помилка при сховуванні')
+                } else {
+                    dispatch(hideThread(id))
+                    console.log ('Тред сховано')
+
                 }
             }
         )
-        dispatch (hideThread (id))
     }
 
 
@@ -158,7 +161,7 @@ const ThreadGlobal = ({
 
                         {useSelector (isLoggedIn) &&
                             <button
-                                onClick={handleHideThread.bind (null, id)}
+                                onClick={() => handleHideThread (id)}
                                 className="text-[10px]  text-primary font-bold rounded after:content-[''] relative after:rounded-[16px] transition-all after:duration-300 after:absolute after:w-0 after:h-[1px] hover:after:w-full after:bg-primary after:bottom-0 after:left-0">
                                 Сховати
                             </button>

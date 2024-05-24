@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import ThreadGlobal from '@/components/threads/ThreadGlobal'
 import { useSelector } from 'react-redux'
 import { selectDormThreads, selectLatestDormThread } from '@/lib/slices/dorm-threads/dormThreadsSlice'
+import {selectHiddenThreads} from "@/lib/slices/threadSlice/threadSlice";
 
 
 const FoodPage = () => {
@@ -10,7 +11,7 @@ const FoodPage = () => {
   const [error, setError] = useState(null) // Track potential errors
   const newDormThread = useSelector(selectLatestDormThread)
   const allDormThreads = useSelector(selectDormThreads)
-
+    const hiddenThreads = useSelector(selectHiddenThreads);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +41,7 @@ const FoodPage = () => {
     }
 
     fetchData()
-  }, [allDormThreads.length, newDormThread])
+  }, [allDormThreads.length, newDormThread, hiddenThreads.length])
 
 
   const  dormThreads = fetchedData || []

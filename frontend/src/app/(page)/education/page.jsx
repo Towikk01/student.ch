@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import ThreadGlobal from '@/components/threads/ThreadGlobal'
 import { useSelector } from 'react-redux'
 import { selectLatestStudyThread, selectStudyThreads } from '@/lib/slices/study-threads/studyThreadsSlice'
+import {selectHiddenThreads} from "@/lib/slices/threadSlice/threadSlice";
 
 
 const FoodPage = () => {
@@ -10,6 +11,7 @@ const FoodPage = () => {
   const [error, setError] = useState(null) // Track potential errors
   const newStudyThreads = useSelector(selectLatestStudyThread)
   const allStudyThreads = useSelector(selectStudyThreads)
+    const hiddenThreads = useSelector(selectHiddenThreads);
 
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const FoodPage = () => {
     }
 
     fetchData()
-  }, [allStudyThreads.length, newStudyThreads])
+  }, [allStudyThreads.length, newStudyThreads, hiddenThreads.length])
 
 
   const  studyThreads = fetchedData || []

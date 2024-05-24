@@ -7,4 +7,6 @@ import org.studench.backend.data.ThreadTheme;
 public interface ThreadThemeRepo extends JpaRepository<ThreadTheme, Long> {
 
     boolean existsByName(String name);
+
+    ThreadTheme findByName(String name);
 }
