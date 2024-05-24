@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {resetThreadId, saveThreadId} from '@/lib/slices/threadSlice/threadSlice'
 import {useDispatch, useSelector} from 'react-redux'
-import {banUser,  unbanUser} from "@/lib/slices/userBanSlice/userBanSlice";
+import {banUser, unbanUser} from "@/lib/slices/userBanSlice/userBanSlice";
 import {makeModerator, makeUser} from "@/lib/slices/userModeratorSlice/userModeratorSlice";
 import {deleteComment, deleteThread} from "@/lib/slices/moderatorPageSlice/moderatorPageSlice";
 import {unhideThread} from "@/lib/slices/hiddenThreadsSlice/hiddenThreadsSlice";
@@ -9,11 +9,11 @@ import {unhideThread} from "@/lib/slices/hiddenThreadsSlice/hiddenThreadsSlice";
 export const TableBase = ({type, data}) => {
 
     const headers = {
-        comments : ['ID', 'Author', 'Text', 'Date', 'Actions'],
-        threads : ['ID', 'Author', 'Title', 'Date', 'Actions'],
-        users : ['ID', 'Username', 'First Name', 'Last Name', 'Role', "isBanned", 'Registration Date', 'Actions'],
-        likedThreads : ['THREAD_ID', 'Author', 'Title', 'Text'],
-        hiddenThreads : ['THREAD_ID', 'Author', 'Title', 'Text', 'Actions'],
+        comments : ['ID', 'Автор', 'Текст', 'Дата', 'Дії'],
+        threads : ['ID', 'Автор', 'Назва', 'Дата', 'Дії'],
+        users : ['ID', 'Нікнейм', 'Імʼя', 'Фамілія', 'Роль', "Заблокованний", 'Дата реєстрації', 'Дії'],
+        likedThreads : ['ID треду', 'Автор', 'Назва', 'Текст'],
+        hiddenThreads : ['ID треду', 'Автор', 'Назва', 'Текст', 'Дії'],
     };
 
 
@@ -63,7 +63,7 @@ export const TableBase = ({type, data}) => {
             if (response.status !== 200) {
                 console.log ('Помилка при скасуванні сховування')
             } else {
-                dispatch(unhideThread (id));
+                dispatch (unhideThread (id));
             }
         }).then (data => {
             console.log (data)
@@ -96,7 +96,7 @@ export const TableBase = ({type, data}) => {
                 if (response.status !== 204 && response.status !== 200) {
                     console.log ('Помилка при видаленні коментаря')
                 } else {
-                    dispatch(deleteThread (id));
+                    dispatch (deleteThread (id));
                 }
             }).then (data => {
                 console.log (data)
@@ -114,7 +114,7 @@ export const TableBase = ({type, data}) => {
                 if (response.status !== 204 && response.status !== 200) {
                     console.log ('Помилка при видаленні коментаря')
                 } else {
-                    dispatch(deleteComment (id));
+                    dispatch (deleteComment (id));
                 }
             }).then (data => {
                 console.log (data)
@@ -136,7 +136,7 @@ export const TableBase = ({type, data}) => {
             if (response.status !== 200) {
                 console.log ('Помилка при бані', response.status)
             } else {
-                dispatch(banUser(id));
+                dispatch (banUser (id));
             }
         }).then (data => {
             console.log (data)
@@ -155,7 +155,7 @@ export const TableBase = ({type, data}) => {
             if (response.status !== 200) {
                 console.log ('Помилка при розбані')
             } else {
-                dispatch(unbanUser(id));
+                dispatch (unbanUser (id));
             }
         }).then (data => {
             console.log (data)
@@ -174,7 +174,7 @@ export const TableBase = ({type, data}) => {
             if (response.status !== 200 && response.status !== 204) {
                 console.log ('Виникла помилка')
             } else {
-                dispatch(makeModerator(id));
+                dispatch (makeModerator (id));
                 return response.json ()
             }
         }).then (data => {
@@ -194,7 +194,7 @@ export const TableBase = ({type, data}) => {
             if (response.status !== 200 && response.status !== 204) {
                 console.log ('Виникла помилка')
             } else {
-                dispatch(makeUser(id));
+                dispatch (makeUser (id));
                 return response.json ()
             }
         }).then (data => {
@@ -260,13 +260,14 @@ export const TableBase = ({type, data}) => {
         <table className="w-full">
             <thead>
             <tr className="bg-black-pearl/70 border-b-primary border-[1px] justify-center">
-                <th className="text-primary text-center" colSpan={headerData.length}>
+                <th className="text-primary text-center py-2" colSpan={headerData.length}>
                     {type.toUpperCase ()}
                 </th>
             </tr>
             <tr className="bg-black-pearl/70 ">
                 {headerData.map ((header, index) => (
-                    <th key={index} className="text-primary text-center border-b-primary border-[1px] ">{header}</th>
+                    <th key={index}
+                        className="py-2 px-2 text-primary text-center border-b-primary border-[1px] ">{header}</th>
                 ))}
             </tr>
             </thead>
@@ -276,7 +277,7 @@ export const TableBase = ({type, data}) => {
                     {Object.keys (row).map ((key, index) => (
                         key !== 'actions' &&
                         <td key={index}
-                            className="text-primary text-center border-[1px] border-b-primary">{row[key]}</td>
+                            className="text-primary px-1.5 py-1.5 text-center border-[1px] border-b-primary">{row[key]}</td>
                     ))}
                     {row.actions && (
                         <td className="text-primary text-center flex flex-col gap-1 border-[1px] border-b-primary">
@@ -299,7 +300,7 @@ export const TableBase = ({type, data}) => {
                                 } else if (action === 'Make User') {
                                     return <button key={index} onClick={() => onMakeUserClick (row.id)}
                                                    className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
-                                } else if ( action === 'Unhide') {
+                                } else if (action === 'Unhide') {
                                     return <button key={index} onClick={() => onUnhideClick (row.id)}
                                                    className="text-primary  hover:bg-primary hover:text-[#000]">{action}</button>;
                                 }

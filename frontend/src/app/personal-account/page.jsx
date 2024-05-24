@@ -106,25 +106,25 @@ const PersonalAccountPage = () => {
             )
     }, [])
 
-    useEffect(() => {
-        fetch("http://localhost:8080/thread/getAllHiddenThreads", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    useEffect (() => {
+        fetch ("http://localhost:8080/thread/getAllHiddenThreads", {
+            method : "GET",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : `Bearer ${localStorage.getItem ("accessToken")}`,
             },
 
-        }).then((response) => {
+        }).then ((response) => {
             if (!response.ok) {
-                console.log("Помилка при завантаженні даних");
+                console.log ("Помилка при завантаженні даних");
             } else {
-                return response.json();
+                return response.json ();
             }
         })
-        .then((response) => {
-            setHiddenThreads(response);
-        });
-    }, [ unhiddenThreads.length ]);
+            .then ((response) => {
+                setHiddenThreads (response);
+            });
+    }, [unhiddenThreads.length]);
 
     const handleThreadClick = (e) => {
         dispatch (resetThreadId ());
@@ -173,10 +173,13 @@ const PersonalAccountPage = () => {
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                    <h6 className="text-peach text-sm text-center">Ваші вподобайки</h6>
+                <div className="flex flex-col gap-5">
                     <div className="flex flex-col w-full justify-evenly items-center  gap-3">
+                        <h6 className="text-peach text-xl text-center">Ваші вподобайки</h6>
                         <TableBase type={'likedThreads'} data={userLikesData}/>
+                    </div>
+                    <div className="flex flex-col w-full justify-evenly items-center  gap-3">
+                        <h6 className="text-peach text-xl text-center">Приховані треди</h6>
                         <TableBase type={'hiddenThreads'} data={hiddenThreads}/>
                     </div>
                 </div>

@@ -75,7 +75,7 @@ const ThreadGlobal = ({
         })
     }
     const dispatch = useDispatch ()
-    console.log("comment" , useSelector (selectComments))
+    console.log ("comment", useSelector (selectComments))
 
     const handleImageClick = imageSrc => {
         setSelectedImage (imageSrc);
@@ -107,7 +107,7 @@ const ThreadGlobal = ({
                 if (!response.ok) {
                     console.log ('Помилка при сховуванні')
                 } else {
-                    dispatch(hideThread(id))
+                    dispatch (hideThread (id))
                     console.log ('Тред сховано')
 
                 }
@@ -125,13 +125,14 @@ const ThreadGlobal = ({
             {imageData &&
                 <div className="w-max h-max">
                     <img src={`data:image/png;base64,${imageData}`} alt="Post image"
-                         className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square"  onClick={() => handleImageClick (`data:image/png;base64,${imageData}`)}/>
+                         className="rounded-md max-w-[150px] max-h-[150px] object-cover aspect-square"
+                         onClick={() => handleImageClick (`data:image/png;base64,${imageData}`)}/>
 
 
                 </div>
 
             }
-            <div className="w-fit flex flex-col gap-2">
+            <div className="w-fit flex flex-col gap-2 pr-5">
                 <div className="post-actions flex flex-col sm:flex-row justify-between gap-1.5 items-center">
                     <div className="flex flex-row gap-1.5 items-center ">
 
@@ -179,8 +180,8 @@ const ThreadGlobal = ({
                             </Link>
                         )}
                     </div>
-                    <div className="flex flex-row gap-1 items-center justify-end">
-                        {role&& role === "USER" ?
+                    <div className="flex flex-row gap-3 items-center justify-end">
+                        {role && role === "USER" ?
                             <p className="text-[10px] text-primary">{username}</p> :
 
                             role && role === "MODERATOR" ?
